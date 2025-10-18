@@ -1,7 +1,15 @@
+import { NavLink } from "react-router";
 import type {Route} from "./+types/home";
 
 
-// import { Welcome } from "../welcome/welcome";
+// const arr = [
+//   {id: 1},
+//   {id: 2},
+//   {id: 3},
+//   {id: 4},
+//   {id: 5},
+//   {id: 6},
+// ]
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -16,8 +24,14 @@ export function meta({}: Route.MetaArgs) {
 export default function Home() {
   return (
     <>
-      <h1>Header</h1>
-      <p>some text</p>
+      <h1 className={'some'}>Header</h1>
+      <p className={'p'}>some text</p>
+      {/*{arr.map(({id}, index) => (*/}
+      {/*  <NavLink to="" end>*/}
+      {/*    {id}*/}
+      {/*  </NavLink>*/}
+      {/*))}*/}
+      <NavLink to="bosses">Bosses</NavLink>
     </>
   )
 }
