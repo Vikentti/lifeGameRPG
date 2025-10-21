@@ -1,5 +1,5 @@
-html {
-  .is-lock {
+html.is-lock {
+  body {
     overflow: hidden;
   }
 }
@@ -9,7 +9,7 @@ body {
   display: flex;
   flex-direction: column;
   color: var(--color-main-text);
-  background-color: var(--color-bg-main);
+  background-color: var(--color-bg-primary);
   font-family: var(--font-famaly-text);
 }
 
@@ -40,4 +40,17 @@ h6,
 .h5-second,
 .h6-second {
   font-family: var(--font-famaly-heders-second);
+}
+
+
+a {
+  color: inherit;
+
+  @include hover {
+    color: var(--color-accent-grean);
+  }
+
+  &[class] {
+    text-decoration: none;
+  }
 }

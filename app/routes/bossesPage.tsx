@@ -1,6 +1,6 @@
 import type {Route} from "./+types/home";
 import {Link} from "react-router";
-import TasksColumns from "../../src/sections/TasksColumns/TasksColumns";
+import AllTasks from "../../src/sections/AllTasks/AllTasks";
 
 
 export function meta({}: Route.MetaArgs) {
@@ -21,7 +21,7 @@ export function meta({}: Route.MetaArgs) {
 export default function Bosses() {
   return (
     <>
-     <TasksColumns />
+     <AllTasks />
     </>
   )
 }

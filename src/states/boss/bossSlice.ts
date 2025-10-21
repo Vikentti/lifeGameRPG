@@ -49,5 +49,5 @@ const bossesSlice = createSlice({
   },
 })
 
-export const {addBoss, removeBoss, removeAllBosses, setBosses} = bossesSlice.actions
+export const {addBoss, removeBoss, removeAllBosses} = bossesSlice.actions
 export default bossesSlice.reducer

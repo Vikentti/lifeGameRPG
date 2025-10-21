@@ -3,14 +3,14 @@
   --color-text-primary: #111827;    /* Основной текст (заголовки, важный контент) */
   --color-text-secondary: #6B7280;  /* Вторичный текст (описания, метки) */
   --color-text-tertiary: #9CA3AF;   /* Третичный текст (плейсхолдеры, disabled) */
-  --color-accent: #6366F1;     /* Акцентный текст (ссылки, активные элементы) */
-  --color-text-success: #10B981;    /* Текст успеха */
-  --color-text-warning: #F59E0B;    /* Текст предупреждения */
+  --color-accent-purple: #6366F1;     /* Акцентный текст (ссылки, активные элементы) */
+  --color-accent-grean: #10B981;    /* Текст успеха */
+  --color-accent-yelow: #F59E0B;    /* Текст предупреждения */
 
-  /* Фоны */
-  --color-bg-primary: #FFFFFF;      /* Основной фон */
-  --color-bg-secondary: #F8FAFC;    /* Вторичный фон (карточки) */
-  --color-bg-tertiary: #F1F5F9;     /* Третичный фон (ховеры) */
+
+  --color-bg-primary: #F5F7FA;
+  --color-bg-secondary: #EBEFF5;
+  --color-bg-tertiary: #D8DFEB;
 
   /* Базовая тень для карточек */
   --shadow-card: 0 2px 8px rgba(99, 102, 241, 0.08);
@@ -30,10 +30,18 @@
   --shadow-button-hover: 0 4px 8px rgba(99, 102, 241, 0.3);
 
 
+  --container-width: #{fluid-to-laptop(
+  $container-desktop-width,
+  $container-laptop-width
+  )};
 
-  --border-accent-one: 1px solid var(--color-accent-one);
-  --border-accent-second: 1px solid var(--color-accent-second);
-  --border-black: 1px solid var(--color-main-text);
+  --container-padding-x: 16px;
+
+
+
+  --border-accent-one: 1px solid var(--color-accent-grean);
+  --border-accent-second: 1px solid var(--color-accent-purple);
+  --border-black: 1px solid var(--color-text-primary);
 
   --border-radius: 10px;
 
