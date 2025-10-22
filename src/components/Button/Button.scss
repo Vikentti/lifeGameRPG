@@ -1,0 +1,13 @@
+
+.button {
+  padding: 5px 10px;
+  border: 2px solid var(--color-text-primary);
+  border-radius: var(--border-radius);
+  color: var(--color-text-primary);
+
+  @include hover {
+    background-color: var(--color-bg-tertiary);
+    border-color: var(--color-accent-grean);
+//    color: var(--color-accent-grean);
+  }
+}

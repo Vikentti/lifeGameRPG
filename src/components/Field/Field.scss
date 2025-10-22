@@ -1,0 +1,35 @@
+
+.field {
+  position: relative;
+
+  &:has(.field__input:not(:placeholder-shown)) .field__label {
+    color: var(--color-text-tertiary);
+    scale: 0.7;
+    translate: -40px -45px;
+    transition-duration: var(--transition-duration);
+  }
+
+  &__label {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    translate: 0 -50%;
+    color: var(--color-text-primary);
+  }
+
+  &__input {
+    height: 43px;
+    padding-inline: 16px;
+    border: var(--border-black);
+    border-radius: var(--border-radius);
+    width: 100%;
+
+    &:focus, &:hover {
+      border: var(--border-accent-one);
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

@@ -1,10 +1,22 @@
 
 .all-tasks {
 
+  padding-top: 80px;
+
   &__actions {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 400px;
+  }
+
+  &__form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 30px;
   }
 }
+
+

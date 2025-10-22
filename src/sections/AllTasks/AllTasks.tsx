@@ -8,6 +8,8 @@ import {addBoss, removeAllBosses} from "../../states/boss/bossSlice";
 import {useRef, useState} from "react";
 import {nanoid} from "nanoid";
 import HydrationTasks from "../../components/HydrationTasks/HydrationTasks";
+import Field from "../../components/Field/Field";
+import Button from "../../components/Button/Button";
 
 
 function AllTasks() {
@@ -29,52 +31,41 @@ function AllTasks() {
     }
   }
 
+  const handlerChange = (e: any) => {
+    setTextValue(e.target.value)
+  }
+
 
   return (
     <HydrationTasks>
       <div
         className='all-tasks'
       >
-       <div className="all-tasks__inner">
-         <form
-           className="all-tasks__form"
-           onSubmit={handlerSubmit}
-         >
-           <div className="all-tasks__actions">
-             <label
-               className="all-tasks__label"
-               htmlFor="name"
-             >Title of boss
-             </label>
-             <input
-               className="all-tasks__input"
-               id="name"
-               name="name"
-               onChange={(e) => {
-                 setTextValue(e.target.value)
-               }}
-               value={textValue}
-               ref={inputRef}
-             />
-           </div>
-           <button
-             type="submit"
-             className="all-tasks__button"
-           >
-             Add boss
-           </button>
-         </form>
-          <button
+        <form
+          className="all-tasks__form"
+          onSubmit={handlerSubmit}
+        >
+          <Field
+            setText={handlerChange}
+            textValue={textValue}
+            inputRef={inputRef}
+          />
+          <Button
+            type={"submit"}
+            title="Add Boss"
+          />
+        </form>
+
+        <button
           onClick={() => dispatch(removeAllBosses())}
           type="button"
         >
           remove all
         </button>
-         <TasksList
+        <TasksList
           arrayToMap={[...bosses.bosses]}
           isBoss
         />
-       </div>
       </div>
     </HydrationTasks>
   )
