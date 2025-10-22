@@ -13,4 +13,6 @@ export interface miniBoss {
 export interface Boss {
   id: string,
   title: string,
+  hp: number,
+  xp: number,
 }

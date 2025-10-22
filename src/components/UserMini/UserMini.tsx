@@ -1,18 +1,20 @@
 import './UserMini.scss'
 import classNames from 'classnames'
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {Link} from "react-router";
 
 interface props {
   className?: string,
 }
 
-function UserMini(props: props) {
+export default function UserMini(props: props) {
   const {
     className,
   } = props
 
   const [isOpen, setIsOpen] = useState(false)
+
+  const listRef = useRef<HTMLUListElement>(null)
 
   const menuItems = [
     {
@@ -37,6 +39,22 @@ function UserMini(props: props) {
     },
   ]
 
+  useEffect(() => {
+    const closeList = (event: MouseEvent) => {
+      if (isOpen &&
+        listRef.current &&
+        !listRef.current.contains(event.target as Node)) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', closeList)
+
+    return () => {
+      document.removeEventListener('mousedown', closeList)
+    }
+  }, [isOpen]);
+
   return (
     <div
       className={classNames(className, 'user-mini')}
@@ -53,29 +71,33 @@ function UserMini(props: props) {
         type="button"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <img
-          className="user-mini__img"
-          src=""
-          alt=""
-          width=""
-          height=""
-          loading="lazy"
-        />
+        {/*<img*/}
+        {/*  className="user-mini__img"*/}
+        {/*  src=""*/}
+        {/*  alt=""*/}
+        {/*  width=""*/}
+        {/*  height=""*/}
+        {/*  loading="lazy"*/}
+        {/*/>*/}
       </button>
-      <ul className={classNames("user-mini__list", {
-        'is-open': isOpen
-      })}>
+      <ul
+        className={classNames("user-mini__list", {
+          'is-open': isOpen
+        })}
+        ref={listRef}
+      >
         {menuItems.map(({title, link}, index) => (
           <li
-            className="user-mini__item"
+            className="user-mini__item "
             key={index}
           >
-            <Link className="user-mini__link" to={link}>{title}</Link>
+            <Link
+              className="user-mini__link button"
+              to={link}
+            >{title}</Link>
           </li>
         ))}
       </ul>
     </div>
   )
 }
-
-export default UserMini

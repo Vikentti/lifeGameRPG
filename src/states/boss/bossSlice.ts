@@ -1,6 +1,6 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import type {Boss} from "../../types/bossTypes";
-import { nanoid } from 'nanoid'
+import {nanoid} from 'nanoid'
 
 interface bossState {
   bosses: Boss[]
@@ -28,10 +28,12 @@ const bossesSlice = createSlice({
   name: "bosses",
   initialState,
   reducers: {
-    addBoss: (state, action: PayloadAction<Omit<Boss, 'id'>>) => {
+    addBoss: (state, action: PayloadAction<Omit<Boss, 'id' | 'xp' | 'hp'>>) => {
       const newBoss = {
         ...action.payload,
         id: nanoid(),
+        hp: Math.floor(Math.random() * (300 - 100) + 100),
+        xp: Math.floor(Math.random() * (300 - 100) + 100)
       }
       state.bosses.push(newBoss)
       localStorage.setItem('bosses', JSON.stringify(state.bosses))
@@ -46,8 +48,26 @@ const bossesSlice = createSlice({
       state.bosses = []
       localStorage.setItem('bosses', JSON.stringify(state.bosses))
     },
+
+    makeHit: (state, action: PayloadAction<{id: string, damage: number}>) => {
+      const hitBoss = state.bosses.find((item) => item.id === action.payload.id)
+      if (hitBoss) {
+        if (hitBoss.hp < action.payload.damage) {
+          hitBoss.hp = 0
+          removeBoss(action.payload.id)
+        } else {
+          hitBoss.hp = hitBoss.hp - action.payload.damage
+        }
+      }
+      localStorage.setItem('bosses', JSON.stringify(state.bosses))
+    }
   },
 })
 
-export const {addBoss, removeBoss, removeAllBosses} = bossesSlice.actions
+export const {
+  addBoss,
+  removeBoss,
+  removeAllBosses,
+  makeHit
+} = bossesSlice.actions
 export default bossesSlice.reducer

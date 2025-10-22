@@ -4,10 +4,12 @@
   border: 2px solid var(--color-text-primary);
   border-radius: var(--border-radius);
   color: var(--color-text-primary);
+  box-shadow: var(--shadow-button);
 
   @include hover {
     background-color: var(--color-bg-tertiary);
     border-color: var(--color-accent-grean);
-//    color: var(--color-accent-grean);
+    color: var(--color-accent-grean);
+    box-shadow: var(--shadow-button-hover);
   }
 }

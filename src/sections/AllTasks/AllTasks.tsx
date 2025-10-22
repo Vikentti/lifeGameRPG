@@ -15,7 +15,7 @@ import Button from "../../components/Button/Button";
 function AllTasks() {
 
 
-  const bosses = useSelector((state: RootState) => state.bosses)
+  const bosses = useSelector((state: RootState) => state.bosses.bosses)
   const dispatch = useDispatch()
   const [textValue, setTextValue] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
@@ -34,6 +34,8 @@ function AllTasks() {
   const handlerChange = (e: any) => {
     setTextValue(e.target.value)
   }
+
+  // console.log(bosses)
 
 
   return (
@@ -56,14 +58,13 @@ function AllTasks() {
           />
         </form>
 
-        <button
+        <Button
+          type={"button"}
           onClick={() => dispatch(removeAllBosses())}
-          type="button"
-        >
-          remove all
-        </button>
+          title="Delete all "
+        />
         <TasksList
-          arrayToMap={[...bosses.bosses]}
+          arrayToMap={[...bosses]}
           isBoss
         />
       </div>

@@ -3,6 +3,7 @@ import {useParams} from "react-router";
 import {useSelector} from "react-redux";
 import {useEffect, useMemo, useState} from "react";
 import type {RootState} from "../../../src/states/store";
+import Button from "../../../src/components/Button/Button";
 
 
 function TasksDetails() {
@@ -16,6 +17,7 @@ function TasksDetails() {
   const task = useMemo(() => {
     return tasks.find(t => t.id === taskId)
   }, [tasks, taskId])
+
 
 
   // useEffect(() => {

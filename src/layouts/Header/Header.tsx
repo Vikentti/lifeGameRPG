@@ -2,24 +2,17 @@ import './Header.scss'
 import classNames from 'classnames'
 import BurgerButton from "../../components/BurgerButton/BurgerButton";
 import {Link, useLocation} from "react-router";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import UserMini from "../../components/UserMini/UserMini";
 
-interface props {
-  className?: string,
-  url?: string
-}
 
 interface linkInter {
   title: string,
   link: string,
 }
 
-export default function Header(props: props) {
-  const {
-    className,
-    url,
-  } = props
+export default function Header() {
+
 
   const links: linkInter[] = [
     {
@@ -56,6 +49,8 @@ export default function Header(props: props) {
 
   const location = useLocation()
 
+  const sideMenu = useRef<HTMLUListElement>(null)
+
   useEffect(() => {
     if (isMenuOpen) {
       document.documentElement.classList.add('is-lock');
@@ -68,7 +63,23 @@ export default function Header(props: props) {
     setIsMenuOpen(!isMenuOpen)
   }
 
-  // console.log()
+
+  useEffect(() => {
+    const closeSideMenu = (event: MouseEvent) => {
+      if (
+        isMenuOpen &&
+        sideMenu.current &&
+        !sideMenu.current.contains(event.target as Node)) {
+        setIsMenuOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", closeSideMenu)
+
+    return () => {
+      document.removeEventListener("mousedown", closeSideMenu)
+    }
+  }, [isMenuOpen]);
 
 
   return (
@@ -81,14 +92,23 @@ export default function Header(props: props) {
             handleClick={handleClick}
             isMenuOpen={isMenuOpen}
           />
-          <Link className="header__link" to={'/'}>
-            <h1 className="header__title">Life Game RPG</h1>
+          <Link
+            className="header__link"
+            to={'/'}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <h1
+              className="header__title"
+
+            >Life Game RPG
+            </h1>
           </Link>
         </div>
         <ul
           className={classNames('header__list', {
             'is-active': isMenuOpen
           })}
+          ref={sideMenu}
         >
           {links.map(({title, link}, index) => (
             <li
