@@ -3,14 +3,17 @@ import classNames from 'classnames'
 import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../../states/store";
 import {makeHit, removeBoss} from "../../states/boss/bossSlice"
-import type {Boss} from "../../types/bossTypes";
+import type {Boss, miniBoss, mob} from "../../types/bossTypes";
 import {Link} from "react-router";
 import Button from "../Button/Button";
 
 
+type EntityArray = Boss[] | miniBoss[] | mob[]
+
+
 interface TaskListProps {
   className?: string,
-  arrayToMap?: Boss[],
+  arrayToMap?: EntityArray,
   isBoss?: boolean,
 }
 
@@ -33,6 +36,14 @@ function TasksList(props: TaskListProps) {
 
   const handleHit = (id: string, damage: number) => {
     dispatch((makeHit({id, damage})))
+
+    const hp = boss.find((item) => item.id === id)
+
+    if (hp) {
+      if (damage > hp.hp) {
+        dispatch(removeBoss(id))
+      }
+    }
   }
 
 
@@ -42,7 +53,7 @@ function TasksList(props: TaskListProps) {
     <ul
       className={classNames(className, 'tasks-list')}
     >
-      {arrayToMap && arrayToMap.map(({title, id, xp, hp}) => (
+      {arrayToMap && arrayToMap.map(({title, id, xp, hp, maxHp}) => (
         <li
           className="tasks-item"
           key={id}
@@ -51,7 +62,7 @@ function TasksList(props: TaskListProps) {
             ? <Link
               to={`/task/${id}`}
               className="tasks__link"
-            >Title:{title}, HP: {hp}, XP: {xp}</Link>
+            >Title:{title}, {maxHp} / {hp}, </Link>
             : <p className="tasks__item">Title:{title}, HP: {hp}, XP: {xp}</p>}
 
           <Button

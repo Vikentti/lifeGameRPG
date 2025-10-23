@@ -4,13 +4,13 @@ import {useSelector} from "react-redux";
 import {useEffect, useMemo, useState} from "react";
 import type {RootState} from "../../../src/states/store";
 import Button from "../../../src/components/Button/Button";
+import TasksList from "../../../src/components/TasksList/TasksList";
 
 
 function TasksDetails() {
 
   const tasks = useSelector((state: RootState) => state.bosses.bosses)
 
-  // const [task, setTask] = useState({})
 
   const {taskId} = useParams()
 
@@ -18,25 +18,25 @@ function TasksDetails() {
     return tasks.find(t => t.id === taskId)
   }, [tasks, taskId])
 
+  const arr1 = [
+    {title: 'task', hp: 1, bossId: 'fuck', maxHp: 30, xp: 5, id: "asdadcxvc234151g"},
 
 
-  // useEffect(() => {
-  //   const data = localStorage.getItem('task')
-  //   const localTask = data ? JSON.parse(data) : {}
-  //   const reduxTask = tasks.find(t => t.id === taskId)
-  //   const selectedTask = reduxTask || localTask
-  //   setTask(selectedTask)
-  //   localStorage.setItem('task', JSON.stringify(selectedTask))
-  // }, [taskId, tasks]);
+  ]
 
-  // console.log(task)
+
 
   return (
     <div
       className='tasks-details'
     >
-      <h1>task title</h1>
-      <h1> {task?.title}</h1>
+      <div className="tasks-details__stats">
+        <h1 className="tasks-details__title"> {task?.title}</h1>
+      </div>
+      <div className="tasks-details__body">
+        <TasksList arrayToMap={arr1}/>
+      </div>
+
     </div>
   )
 }

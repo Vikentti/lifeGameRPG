@@ -15,6 +15,7 @@ export default function UserMini(props: props) {
   const [isOpen, setIsOpen] = useState(false)
 
   const listRef = useRef<HTMLUListElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
   const menuItems = [
     {
@@ -45,6 +46,8 @@ export default function UserMini(props: props) {
         listRef.current &&
         !listRef.current.contains(event.target as Node)) {
         setIsOpen(false)
+      } if (!isOpen && buttonRef.current && buttonRef.current.contains(event.target as Node)) {
+        setIsOpen(true)
       }
     }
 
@@ -69,7 +72,7 @@ export default function UserMini(props: props) {
       <button
         className="user-mini__button"
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        ref={buttonRef}
       >
         {/*<img*/}
         {/*  className="user-mini__img"*/}

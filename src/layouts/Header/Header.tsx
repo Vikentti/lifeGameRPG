@@ -51,6 +51,8 @@ export default function Header() {
 
   const sideMenu = useRef<HTMLUListElement>(null)
 
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     if (isMenuOpen) {
       document.documentElement.classList.add('is-lock');
@@ -72,6 +74,12 @@ export default function Header() {
         !sideMenu.current.contains(event.target as Node)) {
         setIsMenuOpen(false)
       }
+      if (
+        !isMenuOpen &&
+        buttonRef.current &&
+        buttonRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(true)
+      }
     }
 
     document.addEventListener("mousedown", closeSideMenu)
@@ -89,8 +97,9 @@ export default function Header() {
       <div className={classNames("header__inner", 'container')}>
         <div className="header__menu">
           <BurgerButton
-            handleClick={handleClick}
+            // handleClick={handleClick}
             isMenuOpen={isMenuOpen}
+            ref={buttonRef}
           />
           <Link
             className="header__link"

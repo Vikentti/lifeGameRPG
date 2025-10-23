@@ -1,29 +1,25 @@
 import './BurgerButton.scss'
 import classNames from 'classnames'
+import {forwardRef} from "react";
 
-interface props {
+interface BurgerButtonProps {
   className?: string,
-  handleClick: () => void,
   isMenuOpen: boolean
-
 }
 
-function BurgerButton(props : props) {
+const BurgerButton = forwardRef<HTMLButtonElement, BurgerButtonProps>((props, ref) => {
   const {
     className,
-    handleClick,
     isMenuOpen
   } = props
-
-
 
   return (
     <button
       className={classNames(className, 'burger-button', {
-        'is-active' : isMenuOpen
+        'is-active': isMenuOpen
       })}
       type="button"
-      onClick={handleClick}
+      ref={ref}
     >
       <svg
         className="burger-button__svg"
@@ -46,6 +42,8 @@ function BurgerButton(props : props) {
       </svg>
     </button>
   )
-}
+})
+
+BurgerButton.displayName = 'BurgerButton'
 
 export default BurgerButton

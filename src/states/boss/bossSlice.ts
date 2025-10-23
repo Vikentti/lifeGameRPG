@@ -28,11 +28,13 @@ const bossesSlice = createSlice({
   name: "bosses",
   initialState,
   reducers: {
-    addBoss: (state, action: PayloadAction<Omit<Boss, 'id' | 'xp' | 'hp'>>) => {
+    addBoss: (state, action: PayloadAction<Omit<Boss, 'id' | 'xp' | 'hp' | 'maxHp'>>) => {
+      const baseHp = Math.floor(Math.random() * (300 - 100) + 100)
       const newBoss = {
         ...action.payload,
         id: nanoid(),
-        hp: Math.floor(Math.random() * (300 - 100) + 100),
+        maxHp: baseHp,
+        hp: baseHp,
         xp: Math.floor(Math.random() * (300 - 100) + 100)
       }
       state.bosses.push(newBoss)
@@ -54,7 +56,6 @@ const bossesSlice = createSlice({
       if (hitBoss) {
         if (hitBoss.hp < action.payload.damage) {
           hitBoss.hp = 0
-          removeBoss(action.payload.id)
         } else {
           hitBoss.hp = hitBoss.hp - action.payload.damage
         }

@@ -35,7 +35,6 @@ function AllTasks() {
     setTextValue(e.target.value)
   }
 
-  // console.log(bosses)
 
 
   return (
