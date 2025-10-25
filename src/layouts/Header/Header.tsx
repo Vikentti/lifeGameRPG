@@ -4,6 +4,7 @@ import BurgerButton from "../../components/BurgerButton/BurgerButton";
 import {Link, useLocation} from "react-router";
 import {useEffect, useRef, useState} from "react";
 import UserMini from "../../components/UserMini/UserMini";
+import HydrationHeader from "../../components/HydrationTasks/HydrationHeader";
 
 
 interface linkInter {
@@ -91,51 +92,53 @@ export default function Header() {
 
 
   return (
-    <header
-      className={classNames('header')}
-    >
-      <div className={classNames("header__inner", 'container')}>
-        <div className="header__menu">
-          <BurgerButton
-            // handleClick={handleClick}
-            isMenuOpen={isMenuOpen}
-            ref={buttonRef}
-          />
-          <Link
-            className="header__link"
-            to={'/'}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <h1
-              className="header__title"
-
-            >Life Game RPG
-            </h1>
-          </Link>
-        </div>
-        <ul
-          className={classNames('header__list', {
-            'is-active': isMenuOpen
-          })}
-          ref={sideMenu}
-        >
-          {links.map(({title, link}, index) => (
-            <li
-              className="header__item"
-              key={index}
+    <HydrationHeader>
+      <header
+        className={classNames('header')}
+      >
+        <div className={classNames("header__inner", 'container')}>
+          <div className="header__menu">
+            <BurgerButton
+              // handleClick={handleClick}
+              isMenuOpen={isMenuOpen}
+              ref={buttonRef}
+            />
+            <Link
+              className="header__link"
+              to={'/'}
+              onClick={() => setIsMenuOpen(false)}
             >
-              <Link
-                className={classNames("header__item-link", {
-                  'is-active': location.pathname === link
-                })}
-                to={link}
-                onClick={() => setIsMenuOpen(false)}
-              >{title}</Link>
-            </li>
-          ))}
-        </ul>
-        <UserMini />
-      </div>
-    </header>
+              <h1
+                className="header__title"
+
+              >Life Game RPG
+              </h1>
+            </Link>
+          </div>
+          <ul
+            className={classNames('header__list', {
+              'is-active': isMenuOpen
+            })}
+            ref={sideMenu}
+          >
+            {links.map(({title, link}, index) => (
+              <li
+                className="header__item"
+                key={index}
+              >
+                <Link
+                  className={classNames("header__item-link", {
+                    'is-active': location.pathname === link
+                  })}
+                  to={link}
+                  onClick={() => setIsMenuOpen(false)}
+                >{title}</Link>
+              </li>
+            ))}
+          </ul>
+          <UserMini />
+        </div>
+      </header>
+    </HydrationHeader>
   )
 }

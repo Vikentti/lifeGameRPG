@@ -2,6 +2,10 @@ import './UserMini.scss'
 import classNames from 'classnames'
 import {useEffect, useRef, useState} from "react";
 import {Link} from "react-router";
+import {useDispatch, useSelector} from "react-redux";
+import type {AppDispatch, RootState} from "../../states/store";
+import Button from "../Button/Button";
+import {resetUser} from "../../states/User/userSlice";
 
 interface props {
   className?: string,
@@ -16,6 +20,10 @@ export default function UserMini(props: props) {
 
   const listRef = useRef<HTMLUListElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
+  const xp  = useSelector((state : RootState) => state.user.user.xp)
+
+  const lvl = useSelector((state : RootState) => state.user.user.lvl)
+  const dispatch : AppDispatch = useDispatch()
 
   const menuItems = [
     {
@@ -58,6 +66,11 @@ export default function UserMini(props: props) {
     }
   }, [isOpen]);
 
+
+  const handlerClick = () => {
+    dispatch(resetUser(0))
+  }
+
   return (
     <div
       className={classNames(className, 'user-mini')}
@@ -66,8 +79,9 @@ export default function UserMini(props: props) {
         <p className="user-mini_name">Бочаров Викентий</p>
         <div className="user-mini_lvl">
           <p className="user-mini_lvl-title">LVL</p>
-          <p className="puser-mini_lvl-level">19</p>
+          <p className="puser-mini_lvl-level">{lvl}</p>
         </div>
+        <Button type={"button"} onClick={handlerClick} title="reset"/>
       </div>
       <button
         className="user-mini__button"

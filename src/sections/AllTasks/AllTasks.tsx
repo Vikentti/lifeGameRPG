@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import {Link} from "react-router";
 import TasksList from "../../components/TasksList/TasksList";
 import {useDispatch, useSelector} from "react-redux";
-import type {RootState} from "../../states/store";
+import type {AppDispatch, RootState} from "../../states/store";
 import {addBoss, removeAllBosses} from "../../states/boss/bossSlice";
 import {useRef, useState} from "react";
 import {nanoid} from "nanoid";
@@ -16,7 +16,7 @@ function AllTasks() {
 
 
   const bosses = useSelector((state: RootState) => state.bosses.bosses)
-  const dispatch = useDispatch()
+  const dispatch : AppDispatch = useDispatch()
   const [textValue, setTextValue] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
 

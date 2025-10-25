@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import {Link} from "react-router";
 import {useDispatch} from "react-redux";
 import {removeBoss} from "../../states/boss/bossSlice";
+import type {AppDispatch} from "../../states/store";
 
 interface props {
   className?: string
@@ -19,7 +20,7 @@ function TaskItem(props : props) {
     title,
   } = props
 
-  const dispatch = useDispatch()
+  const dispatch : AppDispatch = useDispatch()
 
   const handlerDelete = (id: string | undefined) => {
     if (id != null) {

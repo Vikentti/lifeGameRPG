@@ -29,13 +29,13 @@ const bossesSlice = createSlice({
   initialState,
   reducers: {
     addBoss: (state, action: PayloadAction<Omit<Boss, 'id' | 'xp' | 'hp' | 'maxHp'>>) => {
-      const baseHp = Math.floor(Math.random() * (300 - 100) + 100)
+      const baseHp = Math.floor(Math.random() * (300 - 200) + 200)
       const newBoss = {
         ...action.payload,
         id: nanoid(),
         maxHp: baseHp,
         hp: baseHp,
-        xp: Math.floor(Math.random() * (300 - 100) + 100)
+        xp: baseHp,
       }
       state.bosses.push(newBoss)
       localStorage.setItem('bosses', JSON.stringify(state.bosses))
@@ -52,16 +52,26 @@ const bossesSlice = createSlice({
     },
 
     makeHit: (state, action: PayloadAction<{id: string, damage: number}>) => {
-      const hitBoss = state.bosses.find((item) => item.id === action.payload.id)
-      if (hitBoss) {
-        if (hitBoss.hp < action.payload.damage) {
-          hitBoss.hp = 0
+      const targetBoss = state.bosses.find((item) => item.id === action.payload.id)
+      if (targetBoss) {
+        if (targetBoss.hp < action.payload.damage) {
+          targetBoss.hp = 0
         } else {
-          hitBoss.hp = hitBoss.hp - action.payload.damage
+          targetBoss.hp = targetBoss.hp - action.payload.damage
         }
       }
       localStorage.setItem('bosses', JSON.stringify(state.bosses))
-    }
+    },
+    addHp: (state, action: PayloadAction<{id: string, upHp: number}>) => {
+      const targetBoss = state.bosses.find((item) => item.id === action.payload.id)
+
+      if (targetBoss) {
+        targetBoss.maxHp += action.payload.upHp
+        targetBoss.hp += action.payload.upHp
+      }
+
+      localStorage.setItem('bosses', JSON.stringify(state.bosses))
+    },
   },
 })
 
@@ -69,6 +79,7 @@ export const {
   addBoss,
   removeBoss,
   removeAllBosses,
-  makeHit
+  makeHit,
+  addHp
 } = bossesSlice.actions
 export default bossesSlice.reducer

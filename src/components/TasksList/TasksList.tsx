@@ -1,11 +1,12 @@
 import './TasksList.scss'
 import classNames from 'classnames'
 import {useDispatch, useSelector} from "react-redux";
-import type {RootState} from "../../states/store";
+import type {AppDispatch, RootState} from "../../states/store";
 import {makeHit, removeBoss} from "../../states/boss/bossSlice"
 import type {Boss, miniBoss, mob} from "../../types/bossTypes";
 import {Link} from "react-router";
 import Button from "../Button/Button";
+import {addXp} from "../../states/User/userSlice";
 
 
 type EntityArray = Boss[] | miniBoss[] | mob[]
@@ -24,7 +25,7 @@ function TasksList(props: TaskListProps) {
     isBoss,
   } = props
 
-  const dispatch = useDispatch()
+  const dispatch :AppDispatch = useDispatch()
 
   const boss = useSelector((state: RootState) => state.bosses.bosses)
 
@@ -36,7 +37,7 @@ function TasksList(props: TaskListProps) {
 
   const handleHit = (id: string, damage: number) => {
     dispatch((makeHit({id, damage})))
-
+    dispatch(addXp(damage))
     const hp = boss.find((item) => item.id === id)
 
     if (hp) {
@@ -62,7 +63,7 @@ function TasksList(props: TaskListProps) {
             ? <Link
               to={`/task/${id}`}
               className="tasks__link"
-            >Title:{title}, {maxHp} / {hp}, </Link>
+            >Title:{title}, {maxHp} / {hp}</Link>
             : <p className="tasks__item">Title:{title}, HP: {hp}, XP: {xp}</p>}
 
           <Button
