@@ -47,7 +47,7 @@ const miniBossSlice = createSlice({
 
       localStorage.setItem('miniBosses', JSON.stringify(state.miniBosses))
     },
-    makeHitMiniBoss: (state, action: PayloadAction<{id: string, damage: number}>) => {
+    damageMiniBoss: (state, action: PayloadAction<{id: string, damage: number}>) => {
       const target = state.miniBosses.find((item) => item.id === action.payload.id)
       if (target) {
         if (target.hp < action.payload.damage) {
@@ -72,5 +72,5 @@ const miniBossSlice = createSlice({
   }
 })
 
-export const {addMiniBoss, removeMiniBoss, makeHitMiniBoss,addHpMiniBoss} = miniBossSlice.actions
+export const {addMiniBoss, removeMiniBoss, damageMiniBoss,addHpMiniBoss} = miniBossSlice.actions
 export default miniBossSlice.reducer

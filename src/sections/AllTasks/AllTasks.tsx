@@ -65,6 +65,7 @@ function AllTasks() {
         <TasksList
           arrayToMap={[...bosses]}
           isBoss
+          isColumns
         />
       </div>
     </HydrationTasks>

@@ -51,7 +51,7 @@ const bossesSlice = createSlice({
       localStorage.setItem('bosses', JSON.stringify(state.bosses))
     },
 
-    makeHit: (state, action: PayloadAction<{id: string, damage: number}>) => {
+    damageBoss: (state, action: PayloadAction<{id: string, damage: number}>) => {
       const targetBoss = state.bosses.find((item) => item.id === action.payload.id)
       if (targetBoss) {
         if (targetBoss.hp < action.payload.damage) {
@@ -79,7 +79,7 @@ export const {
   addBoss,
   removeBoss,
   removeAllBosses,
-  makeHit,
+  damageBoss,
   addHp
 } = bossesSlice.actions
 export default bossesSlice.reducer
