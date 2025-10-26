@@ -31,8 +31,6 @@ const userSlice = createSlice({
   reducers: {
     addXp: (state, action: PayloadAction<number>) => {
       state.user.xp += action.payload
-      // state.user.xp = 0
-      // state.user.lvl = 0
       const requaredXp = (state.user.lvl + 1) * 100
 
       if (state.user.xp >= requaredXp) {

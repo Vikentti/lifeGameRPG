@@ -7,7 +7,9 @@ interface BurgerButtonProps {
   isMenuOpen: boolean
 }
 
-const BurgerButton = forwardRef<HTMLButtonElement, BurgerButtonProps>((props, ref) => {
+const BurgerButton =
+  forwardRef<HTMLButtonElement, BurgerButtonProps>
+  ((props, ref) => {
   const {
     className,
     isMenuOpen

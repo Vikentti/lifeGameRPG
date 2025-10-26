@@ -6,6 +6,7 @@ interface props {
   setText?: (e : any) => void,
   textValue?: string,
   inputRef?: any,
+  label?: string
 }
 
 function Field(props : props) {
@@ -13,6 +14,7 @@ function Field(props : props) {
     setText,
     textValue,
     inputRef,
+    label
   } = props
 
   return (
@@ -21,7 +23,7 @@ function Field(props : props) {
         <label
           className="field__label"
           htmlFor="name"
-        >Add new Boss (Task)
+        >{label}
         </label>
         <input
           className="field__input"

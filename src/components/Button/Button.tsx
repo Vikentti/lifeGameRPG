@@ -1,19 +1,22 @@
 import './Button.scss'
 import classNames from 'classnames'
-import type {ButtonHTMLAttributes} from "react";
+import {type ButtonHTMLAttributes, forwardRef} from "react";
 
 type ButtonType = "button" | "submit" | "reset"
 
-interface props {
+interface ButtonProps {
   className?: string
   title?: string
   onClick?: () => void
   type: ButtonType
+  ref?: null
 }
 
 
 
-function Button(props : props) {
+const Button =
+  forwardRef<HTMLButtonElement, ButtonProps>
+  ((props: ButtonProps, ref ) => {
   const {
     className,
     title,
@@ -26,10 +29,11 @@ function Button(props : props) {
       className={classNames(className, 'button')}
       type={type}
       onClick={onClick}
+      ref={ref}
     >
       {title}
     </button>
   )
-}
+})
 
 export default Button
