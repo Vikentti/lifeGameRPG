@@ -9,6 +9,7 @@ import Button from "../Button/Button";
 import {addXp} from "../../states/User/userSlice";
 import {removeMiniBoss} from "../../states/boss/miniBossSlice";
 import {removeMob} from "../../states/boss/mobsSlice";
+import TaskCard from "../TaskCard/TaskCard";
 
 
 type EntityArray = Boss[] | miniBoss[] | mob[]
@@ -33,21 +34,11 @@ function TasksList(props: TaskListProps) {
     isColumns,
   } = props
 
-  const dispatch :AppDispatch = useDispatch()
+  const dispatch: AppDispatch = useDispatch()
 
   const boss = useSelector((state: RootState) => state.bosses.bosses)
 
-  const handlerDelete = (id: string) => {
-    if (isBoss) {
-      dispatch(removeBoss(id))
-    }
-    if (isMiniBoss) {
-      dispatch(removeMiniBoss(id))
-    }
-    if (isMob) {
-      dispatch(removeMob(id))
-    }
-  }
+
 
   const damage = 100
 
@@ -62,8 +53,6 @@ function TasksList(props: TaskListProps) {
       }
     }
   }
-
-
 
 
   return (
@@ -81,14 +70,24 @@ function TasksList(props: TaskListProps) {
             ? <Link
               to={`/task/${id}`}
               className="tasks__link"
-            >Title:{title}, {id}</Link>
-            : <p className="tasks__item">Title:{title}, {id}</p>}
-
-          <Button
-            type={"button"}
-            onClick={() => handlerDelete(id)}
-            title="Delete"
-          />
+            >
+              <TaskCard
+                title={title}
+                xp={xp}
+                hp={hp}
+                maxHp={maxHp}
+                id={id}
+                isBoss
+              />
+            </Link>
+            : <TaskCard
+              title={title}
+              xp={xp}
+              hp={hp}
+              maxHp={maxHp}
+              id={id}
+              isMiniBoss={isMiniBoss}
+            />}
 
           <Button
             type={"button"}

@@ -1,0 +1,83 @@
+
+.task-card {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  width: 300px;
+  padding: 15px;
+  text-align: center;
+  border: var(--border-black);
+  border-radius: var(--border-radius);
+  background-color: var(--color-bg-tertiary);
+
+
+  @include hover {
+    box-shadow: var(--shadow-accent);
+  }
+
+
+  &__image {
+
+    margin: 0 auto;
+  }
+
+  &__title {
+    font-family: var(--font-famaly-heders-second);
+  }
+
+  &__stats {
+    display: grid;
+    row-gap: 8px;
+
+    &-text {
+      font-size: fluid(28, 20);
+    }
+
+    &-completion {
+      display: flex;
+      column-gap: 20px;
+      justify-content: center;
+      font-weight: 500;
+      font-size: fluid(21, 15);
+    }
+
+
+  }
+
+  &__delete-task-button {
+    @include square(40px);
+
+    align-self: end;
+    position: relative;
+    border: none;
+    background-color: var(--color-bg-tertiary);
+    transition-duration: var(--transition-duration);
+
+    @include hover {
+      &::after, &::before {
+        background-color: var(--color-accent-grean);
+      }
+    }
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 70%;
+      height: 2px;
+      background-color: black;
+
+
+    }
+
+    &::before {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    &::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
+}
