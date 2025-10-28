@@ -23,14 +23,12 @@ const mobsSlice = createSlice({
   name: "mobs",
   initialState,
   reducers: {
-    addMob: (state, action: PayloadAction<{title: string, bossId: string}>) => {
-      const health = Math.floor(Math.random() * (50 - 20) + 20)
+    addMob: (state, action: PayloadAction<{title: string, bossId: string, hp : number}>) => {
       const newMob = {
         ...action.payload,
         id: nanoid(),
-        hp: health,
-        xp: health,
-        maxHp: health,
+        xp: action.payload.hp,
+        maxHp: action.payload.hp,
       }
       state.mobs.push(newMob)
       localStorage.setItem("mobs", JSON.stringify(state.mobs))
@@ -41,6 +39,7 @@ const mobsSlice = createSlice({
       localStorage.setItem('mobs', JSON.stringify(state.mobs))
     }
   }
+
 })
 export const {addMob, removeMob} = mobsSlice.actions
 export default mobsSlice.reducer

@@ -11,6 +11,7 @@ import {addMiniBoss} from "../../../src/states/boss/miniBossSlice";
 import classNames from "classnames";
 import HydrationTasks
   from "../../../src/components/HydrationTasks/HydrationTasks";
+import {addHp} from "../../../src/states/boss/bossSlice";
 
 
 
@@ -39,12 +40,12 @@ function TasksDetails() {
     setTextValue(e.target.value)
   }
 
-  const handleAddMob = (e: any) => {
+  const handleAddTask = (e: any) => {
     e.preventDefault()
     if (textValue.trim() !== '' && taskId) {
 
       if (activeType === 'mob') {
-        dispatch(addMob({title: textValue, bossId: taskId}))
+        dispatch(addMob({title: textValue, bossId: taskId, hp: Math.floor(Math.random() * (50 - 20) + 20)}))
       } else {
         dispatch(addMiniBoss({title: textValue, bossId: taskId}))
       }
@@ -69,7 +70,7 @@ function TasksDetails() {
         <div className="tasks-details__body">
           <form
             className="tasks-details__form"
-            onSubmit={handleAddMob}
+            onSubmit={handleAddTask}
           >
             <Field
               setText={handlerChange}

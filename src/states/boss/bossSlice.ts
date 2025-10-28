@@ -1,6 +1,7 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import type {Boss} from "../../types/bossTypes";
 import {nanoid} from 'nanoid'
+import {addMob} from "./mobsSlice";
 
 interface bossState {
   bosses: Boss[]
@@ -73,6 +74,17 @@ const bossesSlice = createSlice({
       localStorage.setItem('bosses', JSON.stringify(state.bosses))
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(addMob, (state, action: PayloadAction<{ bossId: string , hp : number }>) => {
+      const targetBoss = state.bosses.find((item) => item.id === action.payload.bossId)
+
+      if (targetBoss) {
+        targetBoss.hp += action.payload.hp
+        targetBoss.maxHp += action.payload.hp
+      }
+
+    })
+  }
 })
 
 export const {

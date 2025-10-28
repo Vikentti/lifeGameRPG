@@ -2,11 +2,11 @@ import './TaskCard.scss'
 import classNames from 'classnames'
 import React from "react";
 import Button from "../Button/Button";
-import {removeBoss} from "../../states/boss/bossSlice";
+import {damageBoss, removeBoss} from "../../states/boss/bossSlice";
 import {removeMiniBoss} from "../../states/boss/miniBossSlice";
 import {removeMob} from "../../states/boss/mobsSlice";
-import {useDispatch} from "react-redux";
-import type {AppDispatch} from "../../states/store";
+import {useDispatch, useSelector} from "react-redux";
+import type {AppDispatch, RootState} from "../../states/store";
 import HpBar from "../HpBar/HpBar";
 
 interface TaskCardProps {
@@ -33,15 +33,28 @@ const TaskCard: React.FC<TaskCardProps> = ({
 
   const dispatch: AppDispatch = useDispatch()
 
+  const mobs = useSelector((state: RootState) => state.mobs.mobs)
+    const miniBosses = useSelector((state: RootState) => state.miniBosses.miniBosses)
+
 
   const handlerDelete = (id: string) => {
+
     if (isBoss) {
       dispatch(removeBoss(id))
     }
     if (isMiniBoss) {
-      dispatch(removeMiniBoss(id))
+      const miniBoss = [...miniBosses].find((item) => item.id === id)
+      if (miniBoss) {
+        dispatch(damageBoss({ id: miniBoss.bossId, damage: miniBoss.hp }))
+        dispatch(removeMiniBoss(id))
+      }
+
     } else {
-      dispatch(removeMob(id))
+      const mob = [...mobs].find((item) => item.id === id)
+      if (mob) {
+        dispatch(damageBoss({ id: mob.bossId, damage: mob.hp }))
+        dispatch(removeMob(id))
+      }
     }
   }
 
