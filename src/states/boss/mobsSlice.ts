@@ -1,29 +1,51 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import type {mob} from "../../types/bossTypes";
 import {nanoid} from "nanoid";
+import type {RootState} from "../store";
 
 interface mobState {
   mobs: mob[]
+  totalMobs: Record<string, number>
 }
 
-const loadFromLocalStorage = (): mob[] => {
+const loadFromLocalStorage = (): mobState => {
+
+  if (typeof window === 'undefined') {
+    return {mobs: [], totalMobs: {}}
+  }
+
   try {
     const data = localStorage.getItem('mobs')
-    return data ? JSON.parse(data) : []
+    if (data) {
+      const parse = JSON.parse(data)
+
+      if (Array.isArray(parse)) {
+        return {
+          mobs: parse,
+          totalMobs: parse.reduce((acc, boss) => {
+            acc[boss.bossId] = (acc[boss.bossId] || 0) + 1
+          }, {})
+        }
+      }
+      return parse
+    }
+    return {mobs: [], totalMobs: {}}
   } catch {
-    return []
+    return {mobs: [], totalMobs: {}}
   }
 }
 
-const initialState: mobState = {
-  mobs: loadFromLocalStorage()
-}
+const initialState: mobState = loadFromLocalStorage()
 
 const mobsSlice = createSlice({
   name: "mobs",
   initialState,
   reducers: {
-    addMob: (state, action: PayloadAction<{title: string, bossId: string, hp : number}>) => {
+    addMob: (state, action: PayloadAction<{
+      title: string,
+      bossId: string,
+      hp: number
+    }>) => {
       const newMob = {
         ...action.payload,
         id: nanoid(),
@@ -31,15 +53,23 @@ const mobsSlice = createSlice({
         maxHp: action.payload.hp,
       }
       state.mobs.push(newMob)
-      localStorage.setItem("mobs", JSON.stringify(state.mobs))
+
+
+      state.totalMobs[action.payload.bossId] =
+        (state.totalMobs[action.payload.bossId] || 0) + 1
+      localStorage.setItem("mobs", JSON.stringify(state))
     },
     removeMob: (state, action: PayloadAction<string>) => {
       state.mobs = state.mobs.filter((item) => item.id !== action.payload)
 
-      localStorage.setItem('mobs', JSON.stringify(state.mobs))
+      localStorage.setItem("mobs", JSON.stringify(state))
     }
   }
 
 })
 export const {addMob, removeMob} = mobsSlice.actions
 export default mobsSlice.reducer
+
+export const selectedTotalMobs = (state: RootState, bossId: string) => {
+  return state.mobs.totalMobs[bossId] || 0
+}

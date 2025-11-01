@@ -2,6 +2,7 @@ import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import type {Boss} from "../../types/bossTypes";
 import {nanoid} from 'nanoid'
 import {addMob} from "./mobsSlice";
+import {addMiniBoss} from "./miniBossSlice";
 
 interface bossState {
   bosses: Boss[]
@@ -52,7 +53,10 @@ const bossesSlice = createSlice({
       localStorage.setItem('bosses', JSON.stringify(state.bosses))
     },
 
-    damageBoss: (state, action: PayloadAction<{id: string, damage: number}>) => {
+    damageBoss: (state, action: PayloadAction<{
+      id: string,
+      damage: number
+    }>) => {
       const targetBoss = state.bosses.find((item) => item.id === action.payload.id)
       if (targetBoss) {
         if (targetBoss.hp < action.payload.damage) {
@@ -63,7 +67,7 @@ const bossesSlice = createSlice({
       }
       localStorage.setItem('bosses', JSON.stringify(state.bosses))
     },
-    addHp: (state, action: PayloadAction<{id: string, upHp: number}>) => {
+    addHp: (state, action: PayloadAction<{ id: string, upHp: number }>) => {
       const targetBoss = state.bosses.find((item) => item.id === action.payload.id)
 
       if (targetBoss) {
@@ -75,15 +79,30 @@ const bossesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(addMob, (state, action: PayloadAction<{ bossId: string , hp : number }>) => {
-      const targetBoss = state.bosses.find((item) => item.id === action.payload.bossId)
+    builder
+      .addCase(addMob, (state, action: PayloadAction<{
+        bossId: string,
+        hp: number
+      }>) => {
+        const targetBoss = state.bosses.find((item) => item.id === action.payload.bossId)
 
-      if (targetBoss) {
-        targetBoss.hp += action.payload.hp
-        targetBoss.maxHp += action.payload.hp
-      }
+        if (targetBoss) {
+          targetBoss.hp += action.payload.hp
+          targetBoss.maxHp += action.payload.hp
+        }
 
-    })
+      })
+      .addCase(addMiniBoss, (state, action: PayloadAction<{
+        bossId: string,
+        hp: number
+      }>) => {
+        const targetBoss = state.bosses.find((item) => item.id === action.payload.bossId)
+
+        if (targetBoss) {
+          targetBoss.hp += action.payload.hp
+          targetBoss.maxHp += action.payload.hp
+        }
+      })
   }
 })
 

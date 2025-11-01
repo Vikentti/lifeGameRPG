@@ -1,53 +1,75 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import type {miniBoss} from "../../types/bossTypes";
 import {nanoid} from "nanoid";
+import type {RootState} from "../store";
 
 interface miniBossState {
   miniBosses: miniBoss[]
+  totalMiniBosses: Record<string, number>
 }
 
-const loadFromLocalStorage = (): miniBoss[] => {
+const loadFromLocalStorage = (): miniBossState => {
 
   if (typeof window === 'undefined') {
-    return [];
+    return {miniBosses: [], totalMiniBosses: {}};
   }
 
   try {
     const data = localStorage.getItem('miniBosses')
-    return data ? JSON.parse(data) : []
+    if (data) {
+      const parsed = JSON.parse(data)
+
+      if (Array.isArray(parsed)) {
+        return {
+          miniBosses: parsed,
+          totalMiniBosses: parsed.reduce((acc, boss) => {
+            acc[boss.bossId] = (acc[boss.bossId] || 0) + 1
+            return acc
+          }, {})
+        }
+      }
+      return parsed
+    }
+    return {miniBosses: [], totalMiniBosses: {}};
   } catch {
-    return []
+    return {miniBosses: [], totalMiniBosses: {}}
   }
 }
 
-const initialState: miniBossState = {
-  miniBosses: loadFromLocalStorage()
-}
+const initialState: miniBossState = loadFromLocalStorage()
 
 const miniBossSlice = createSlice({
   name: "miniBosses",
   initialState,
   reducers: {
-    addMiniBoss: (state, action: PayloadAction<{title: string, bossId: string}>) => {
-      const health = Math.floor(Math.random() * (100 - 50) + 50)
+    addMiniBoss: (state, action: PayloadAction<{
+      title: string,
+      bossId: string,
+      hp: number
+    }>) => {
       const newMiniBoss = {
         ...action.payload,
         id: nanoid(),
-        hp: health,
-        xp: health,
-        maxHp: health,
+        xp: action.payload.hp,
+        maxHp: action.payload.hp,
       }
       state.miniBosses.push(newMiniBoss)
 
-      localStorage.setItem('miniBosses', JSON.stringify(state.miniBosses))
+
+      state.totalMiniBosses[action.payload.bossId] =
+        (state.totalMiniBosses[action.payload.bossId] || 0) + 1
+      localStorage.setItem('miniBosses', JSON.stringify(state))
     },
 
     removeMiniBoss: (state, action: PayloadAction<string>) => {
       state.miniBosses = state.miniBosses.filter((item) => item.id !== action.payload)
 
-      localStorage.setItem('miniBosses', JSON.stringify(state.miniBosses))
+      localStorage.setItem('miniBosses', JSON.stringify(state))
     },
-    damageMiniBoss: (state, action: PayloadAction<{id: string, damage: number}>) => {
+    damageMiniBoss: (state, action: PayloadAction<{
+      id: string,
+      damage: number
+    }>) => {
       const target = state.miniBosses.find((item) => item.id === action.payload.id)
       if (target) {
         if (target.hp < action.payload.damage) {
@@ -56,9 +78,12 @@ const miniBossSlice = createSlice({
           target.hp = target.hp - action.payload.damage
         }
       }
-      localStorage.setItem('miniBosses', JSON.stringify(state.miniBosses))
+      localStorage.setItem('miniBosses', JSON.stringify(state))
     },
-    addHpMiniBoss: (state, action: PayloadAction<{id: string, upHp: number}>) => {
+    addHpMiniBoss: (state, action: PayloadAction<{
+      id: string,
+      upHp: number
+    }>) => {
       const target = state.miniBosses.find((item) => item.id === action.payload.id)
 
       if (target) {
@@ -66,11 +91,20 @@ const miniBossSlice = createSlice({
         target.hp += action.payload.upHp
       }
 
-      localStorage.setItem('miniBosses', JSON.stringify(state.miniBosses))
+      localStorage.setItem('miniBosses', JSON.stringify(state))
     },
 
   }
 })
 
-export const {addMiniBoss, removeMiniBoss, damageMiniBoss,addHpMiniBoss} = miniBossSlice.actions
+export const {
+  addMiniBoss,
+  removeMiniBoss,
+  damageMiniBoss,
+  addHpMiniBoss
+} = miniBossSlice.actions
 export default miniBossSlice.reducer
+
+export const selectedTotalMiniBoss = (state: RootState, bossId: string) => {
+  return state.miniBosses.totalMiniBosses[bossId] || 0
+}
