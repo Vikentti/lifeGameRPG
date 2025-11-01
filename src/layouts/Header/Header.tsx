@@ -12,7 +12,7 @@ interface linkInter {
   link: string,
 }
 
-export default function Header() {
+const Header = () => {
 
 
   const links: linkInter[] = [
@@ -142,3 +142,5 @@ export default function Header() {
     </HydrationHeader>
   )
 }
+
+export default Header

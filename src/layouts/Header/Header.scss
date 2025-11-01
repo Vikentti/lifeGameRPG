@@ -12,6 +12,7 @@
   animation-fill-mode: both;
   animation-timeline: scroll();
   animation-range: 0 100px;
+  z-index: 10;
 
 
   @mixin scrolling-header-styles {
@@ -59,6 +60,7 @@
     background-color: var(--color-bg-secondary);
     opacity: 0;
     visibility: hidden;
+
 
     &.is-active {
       visibility: visible;

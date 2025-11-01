@@ -6,24 +6,24 @@ import {useDispatch, useSelector} from "react-redux";
 import type {AppDispatch, RootState} from "../../states/store";
 import Button from "../Button/Button";
 import {resetUser} from "../../states/User/userSlice";
+import ThemeChangeButton from "../ThemeChangeButton/ThemeChangeButton";
 
-interface props {
+interface userMiniProps {
   className?: string,
 }
 
-export default function UserMini(props: props) {
-  const {
-    className,
-  } = props
+const UserMini = ({className}: userMiniProps) => {
+
 
   const [isOpen, setIsOpen] = useState(false)
 
   const listRef = useRef<HTMLUListElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
-  const xp  = useSelector((state : RootState) => state.user.user.xp)
+  const xp = useSelector((state: RootState) => state.user.user.xp)
 
-  const lvl = useSelector((state : RootState) => state.user.user.lvl)
-  const dispatch : AppDispatch = useDispatch()
+
+  const lvl = useSelector((state: RootState) => state.user.user.lvl)
+  const dispatch: AppDispatch = useDispatch()
 
   const menuItems = [
     {
@@ -54,7 +54,8 @@ export default function UserMini(props: props) {
         listRef.current &&
         !listRef.current.contains(event.target as Node)) {
         setIsOpen(false)
-      } if (!isOpen && buttonRef.current && buttonRef.current.contains(event.target as Node)) {
+      }
+      if (!isOpen && buttonRef.current && buttonRef.current.contains(event.target as Node)) {
         setIsOpen(true)
       }
     }
@@ -66,36 +67,33 @@ export default function UserMini(props: props) {
     }
   }, [isOpen]);
 
-
   const handlerClick = () => {
     dispatch(resetUser(0))
   }
+
 
   return (
     <div
       className={classNames(className, 'user-mini')}
     >
       <div className="user-mini__stats">
+        <ThemeChangeButton />
         <p className="user-mini_name">Бочаров Викентий</p>
         <div className="user-mini_lvl">
           <p className="user-mini_lvl-title">LVL</p>
           <p className="puser-mini_lvl-level">{lvl}</p>
         </div>
-        <Button type={"button"} onClick={handlerClick} title="reset"/>
+        <Button
+          type={"button"}
+          onClick={handlerClick}
+          title="reset"
+        />
       </div>
       <button
         className="user-mini__button"
         type="button"
         ref={buttonRef}
-      >
-        {/*<img*/}
-        {/*  className="user-mini__img"*/}
-        {/*  src=""*/}
-        {/*  alt=""*/}
-        {/*  width=""*/}
-        {/*  height=""*/}
-        {/*  loading="lazy"*/}
-        {/*/>*/}
+      > click
       </button>
       <ul
         className={classNames("user-mini__list", {
@@ -118,3 +116,5 @@ export default function UserMini(props: props) {
     </div>
   )
 }
+
+export default UserMini

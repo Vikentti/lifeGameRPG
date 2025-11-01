@@ -71,8 +71,8 @@ const bossesSlice = createSlice({
       const targetBoss = state.bosses.find((item) => item.id === action.payload.id)
 
       if (targetBoss) {
-        targetBoss.maxHp += action.payload.upHp
-        targetBoss.hp += action.payload.upHp
+        targetBoss.maxHp -= action.payload.upHp
+        targetBoss.hp -= action.payload.upHp
       }
 
       localStorage.setItem('bosses', JSON.stringify(state.bosses))

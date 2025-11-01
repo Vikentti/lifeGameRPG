@@ -16,9 +16,10 @@ import HydrationTasks
   from "../../../src/components/HydrationTasks/HydrationTasks";
 import {addHp} from "../../../src/states/boss/bossSlice";
 import HpBar from "../../../src/components/HpBar/HpBar";
+import BossCard from "../../../src/components/BossCard/BossCard";
 
 
-function TasksDetails() {
+const TasksDetails = () => {
 
   const {taskId} = useParams()
   const tasks = useSelector((state: RootState) => state.bosses.bosses)
@@ -92,46 +93,15 @@ function TasksDetails() {
       <div
         className='tasks-details'
       >
-        <div className="tasks-details__boss">
-          <div className="tasks-details__boss-head">
-            <img
-              className="tasks-details__boss-image"
-              src="/src/assets/icons/overlord-helm.svg"
-              width="80"
-              height="80"
-              loading="lazy"
-            />
-            <h1 className="tasks-details__boss-title"> {task?.title}</h1>
-          </div>
-          <div className="tasks-details__info">
-            <div className="tasks-details__info-miniboss">
-              <img
-                className="tasks-details__info-miniboss-image"
-                src="/src/assets/icons/brutal-helm.svg"
-                alt=""
-                width="50"
-                height="50"
-                loading="lazy"
-              />
-              <p className="tasks-details__info-miniboss-number">{miniBossLeft}/{totalMiniBosses}</p>
-            </div>
-            <div className="tasks-details__info-mob">
-              <img
-                className="tasks-details__info-mob-image"
-                src="/src/assets/icons/horned-helm.svg"
-                alt=""
-                width="50"
-                height="50"
-                loading="lazy"
-              />
-              <p className="tasks-details__info-mob-number">{mobsLeft}/{totalMobs}</p>
-            </div>
-            <HpBar
-              hp={bossHp}
-              maxHp={bossMaxHp}
-            />
-          </div>
-        </div>
+        <BossCard
+          title={task.title}
+          leftMini={miniBossLeft}
+          totalMini={totalMiniBosses}
+          hp={task.hp}
+          maxHp={task.maxHp}
+          leftMobs={mobsLeft}
+          totalMobs={totalMobs}
+        />
         <div className="tasks-details__body">
           <form
             className="tasks-details__form"

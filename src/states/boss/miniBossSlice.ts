@@ -54,15 +54,21 @@ const miniBossSlice = createSlice({
         maxHp: action.payload.hp,
       }
       state.miniBosses.push(newMiniBoss)
-
-
       state.totalMiniBosses[action.payload.bossId] =
         (state.totalMiniBosses[action.payload.bossId] || 0) + 1
       localStorage.setItem('miniBosses', JSON.stringify(state))
     },
+    removeMiniBoss: (state, action: PayloadAction<{
+      id: string,
+      noComplete?: boolean,
+      bossId?: string,
+    }>) => {
+      state.miniBosses = state.miniBosses.filter((item) => item.id !== action.payload.id)
 
-    removeMiniBoss: (state, action: PayloadAction<string>) => {
-      state.miniBosses = state.miniBosses.filter((item) => item.id !== action.payload)
+      if (action.payload.noComplete && action.payload.bossId) {
+        state.totalMiniBosses[action.payload.bossId] =
+          (state.totalMiniBosses[action.payload.bossId] || 0) -1
+      }
 
       localStorage.setItem('miniBosses', JSON.stringify(state))
     },
@@ -85,12 +91,10 @@ const miniBossSlice = createSlice({
       upHp: number
     }>) => {
       const target = state.miniBosses.find((item) => item.id === action.payload.id)
-
       if (target) {
         target.maxHp += action.payload.upHp
         target.hp += action.payload.upHp
       }
-
       localStorage.setItem('miniBosses', JSON.stringify(state))
     },
 

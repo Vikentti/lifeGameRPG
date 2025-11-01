@@ -1,11 +1,11 @@
 :root {
   /* Текст */
-  --color-text-primary: #111827;    /* Основной текст (заголовки, важный контент) */
-  --color-text-secondary: #6B7280;  /* Вторичный текст (описания, метки) */
-  --color-text-tertiary: #9CA3AF;   /* Третичный текст (плейсхолдеры, disabled) */
-  --color-accent-purple: #6366F1;     /* Акцентный текст (ссылки, активные элементы) */
-  --color-accent-grean: #10B981;    /* Текст успеха */
-  --color-accent-yelow: #F59E0B;    /* Текст предупреждения */
+  --color-text-primary: #111827; /* Основной текст (заголовки, важный контент) */
+  --color-text-secondary: #6B7280; /* Вторичный текст (описания, метки) */
+  --color-text-tertiary: #9CA3AF; /* Третичный текст (плейсхолдеры, disabled) */
+  --color-accent-purple: #6366F1; /* Акцентный текст (ссылки, активные элементы) */
+  --color-accent-grean: #10B981; /* Текст успеха */
+  --color-accent-yelow: #F59E0B; /* Текст предупреждения */
 
 
   --color-bg-primary: #F5F7FA;
@@ -38,7 +38,6 @@
   --container-padding-x: 16px;
 
 
-
   --border-accent-one: 1px solid var(--color-accent-grean);
   --border-accent-second: 1px solid var(--color-accent-purple);
   --border-black: 1px solid var(--color-text-primary);
@@ -56,33 +55,33 @@
 
 // For DARK theme colors
 
-//.dark-theme {
-//--color-text-primary: #F9FAFB;    /* Основной текст */
-//--color-text-secondary: #D1D5DB;  /* Вторичный текст */
-//--color-text-tertiary: #6B7280;   /* Третичный текст */
-//--color-accent: #818CF8;     /* Акцентный текст */
-//--color-text-success: #34D399;    /* Текст успеха */
-//--color-text-warning: #FBBF24;    /* Текст предупреждения */
-//
-///* Фоны */
-//--color-bg-primary: #111827;      /* Основной фон */
-//--color-bg-secondary: #1F2937;    /* Вторичный фон (карточки) */
-//--color-bg-tertiary: #374151;     /* Третичный фон (ховеры) */
-//
-//  /* Базовая тень для карточек */
-//  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
-//  --shadow-card-hover: 0 4px 16px rgba(129, 140, 248, 0.15);
-//
-//  /* Тень для хедера и важных элементов */
-//  --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.4);
-//
-//  /* Тень для модальных окон/выпадающих меню */
-//  --shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.5);
-//
-//  /* Акцентная тень для активных элементов (свечение!) */
-//  --shadow-accent: 0 4px 16px rgba(129, 140, 248, 0.35);
-//
-//  /* Минимальная тень для кнопок */
-//  --shadow-button: 0 2px 4px rgba(129, 140, 248, 0.25);
-//  --shadow-button-hover: 0 4px 12px rgba(129, 140, 248, 0.4);
-//}
+.dark-theme {
+  --color-text-primary: #F9FAFB; /* Основной текст */
+  --color-text-secondary: #D1D5DB; /* Вторичный текст */
+  --color-text-tertiary: #6B7280; /* Третичный текст */
+  --color-accent-purple: #818CF8; /* Акцентный текст */
+  --color-accent-grean: #34D399; /* Текст успеха */
+  --color-accent-yelow: #FBBF24; /* Текст предупреждения */
+
+  /* Фоны */
+  --color-bg-primary: #111827; /* Основной фон */
+  --color-bg-secondary: #1F2937; /* Вторичный фон (карточки) */
+  --color-bg-tertiary: #374151; /* Третичный фон (ховеры) */
+
+  /* Базовая тень для карточек */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-card-hover: 0 4px 16px rgba(129, 140, 248, 0.15);
+
+  /* Тень для хедера и важных элементов */
+  --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.4);
+
+  /* Тень для модальных окон/выпадающих меню */
+  --shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+  /* Акцентная тень для активных элементов (свечение!) */
+  --shadow-accent: 0 4px 16px rgba(129, 140, 248, 0.35);
+
+  /* Минимальная тень для кнопок */
+  --shadow-button: 0 2px 4px rgba(129, 140, 248, 0.25);
+  --shadow-button-hover: 0 4px 12px rgba(129, 140, 248, 0.4);
+}

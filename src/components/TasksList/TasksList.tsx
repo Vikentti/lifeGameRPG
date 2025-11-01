@@ -19,40 +19,17 @@ interface TaskListProps {
   className?: string,
   arrayToMap?: EntityArray,
   isBoss?: boolean,
-  isMob?: boolean,
   isMiniBoss?: boolean,
   isColumns?: boolean,
 }
 
-function TasksList(props: TaskListProps) {
-  const {
-    className,
-    arrayToMap,
-    isBoss,
-    isMob,
-    isMiniBoss,
-    isColumns,
-  } = props
-
-  const dispatch: AppDispatch = useDispatch()
-
-  const boss = useSelector((state: RootState) => state.bosses.bosses)
-
-
-
-  const damage = 100
-
-  const handleHit = (id: string, damage: number) => {
-    dispatch((damageBoss({id, damage})))
-    dispatch(addXp(damage))
-    const hp = boss.find((item) => item.id === id)
-
-    if (hp) {
-      if (damage > hp.hp) {
-        dispatch(removeBoss(id))
-      }
-    }
-  }
+const TasksList = ({
+                     className,
+                     arrayToMap,
+                     isBoss,
+                     isMiniBoss,
+                     isColumns
+                   } : TaskListProps) => {
 
 
   return (
@@ -88,12 +65,6 @@ function TasksList(props: TaskListProps) {
               id={id}
               isMiniBoss={isMiniBoss}
             />}
-
-          <Button
-            type={"button"}
-            onClick={() => handleHit(id, damage)}
-            title="hit on 100"
-          />
         </li>
       ))}
     </ul>

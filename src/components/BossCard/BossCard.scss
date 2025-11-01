@@ -1,0 +1,36 @@
+
+.boss-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 40px;
+  padding-block: 25px;
+
+  &__head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+  }
+
+  &__title {
+    font-size: 45px;
+    padding: 15px 35px;
+    border: 2px solid var(--color-accent-grean);
+    border-radius: 30px;
+  }
+
+  &__body {
+    display: grid;
+    row-gap: 10px;
+    width: 80%;
+  }
+
+  &__info {
+    display: flex;
+    column-gap: 100px;
+    justify-content: center;
+    text-align: center;
+  }
+}

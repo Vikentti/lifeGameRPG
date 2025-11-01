@@ -2,7 +2,7 @@ import './TaskCard.scss'
 import classNames from 'classnames'
 import React from "react";
 import Button from "../Button/Button";
-import {damageBoss, removeBoss} from "../../states/boss/bossSlice";
+import {addHp, damageBoss, removeBoss} from "../../states/boss/bossSlice";
 import {removeMiniBoss} from "../../states/boss/miniBossSlice";
 import {removeMob} from "../../states/boss/mobsSlice";
 import {useDispatch, useSelector} from "react-redux";
@@ -46,14 +46,34 @@ const TaskCard: React.FC<TaskCardProps> = ({
       const miniBoss = [...miniBosses].find((item) => item.id === id)
       if (miniBoss) {
         dispatch(damageBoss({ id: miniBoss.bossId, damage: miniBoss.hp }))
-        dispatch(removeMiniBoss(id))
+        dispatch(removeMiniBoss({id : id}))
       }
 
     } else {
       const mob = [...mobs].find((item) => item.id === id)
       if (mob) {
         dispatch(damageBoss({ id: mob.bossId, damage: mob.hp }))
-        dispatch(removeMob(id))
+        dispatch(removeMob({id : id}))
+      }
+    }
+  }
+
+  const handlerSimpleDelete =(id: string) => {
+    if (isBoss) {
+      dispatch(removeBoss(id))
+    }
+    if (isMiniBoss) {
+      const miniBoss = [...miniBosses].find((item) => item.id === id)
+      if (miniBoss) {
+        dispatch(addHp({id: miniBoss.bossId, upHp: miniBoss.hp}))
+        dispatch(removeMiniBoss({id : id, noComplete : true, bossId : miniBoss.bossId}))
+      }
+
+    } else {
+      const mob = [...mobs].find((item) => item.id === id)
+      if (mob) {
+        dispatch(addHp({id: mob.bossId, upHp: mob.hp}))
+        dispatch(removeMob({id : id, noComplete : true, bossId : mob.bossId}))
       }
     }
   }
@@ -68,10 +88,10 @@ const TaskCard: React.FC<TaskCardProps> = ({
     <div
       className={classNames(className, 'task-card')}
     >
-      {!isBoss && <button
+      <button
         className="task-card__delete-task-button"
-        onClick={() => handlerDelete(id)}
-      />}
+        onClick={() => handlerSimpleDelete(id)}
+      />
       <img
         className="task-card__image"
         src={imageSrc}

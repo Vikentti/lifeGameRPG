@@ -8,7 +8,7 @@ interface HpBarProps {
   maxHp: number
 }
 
-const HpBar: React.FC<HpBarProps> = ({className, hp, maxHp}) => {
+const HpBar = ({className, hp, maxHp}: HpBarProps) => {
 
   const currentHp = hp / (maxHp / 100)
 

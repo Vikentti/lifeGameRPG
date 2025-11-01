@@ -59,8 +59,17 @@ const mobsSlice = createSlice({
         (state.totalMobs[action.payload.bossId] || 0) + 1
       localStorage.setItem("mobs", JSON.stringify(state))
     },
-    removeMob: (state, action: PayloadAction<string>) => {
-      state.mobs = state.mobs.filter((item) => item.id !== action.payload)
+    removeMob: (state, action: PayloadAction<{
+      id: string,
+      noComplete?: boolean,
+      bossId?: string,
+    }>) => {
+      state.mobs = state.mobs.filter((item) => item.id !== action.payload.id)
+
+      if (action.payload.noComplete && action.payload.bossId) {
+        state.totalMobs[action.payload.bossId] =
+          (state.totalMobs[action.payload.bossId] || 0) - 1
+      }
 
       localStorage.setItem("mobs", JSON.stringify(state))
     }
