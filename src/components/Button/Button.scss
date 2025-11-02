@@ -14,4 +14,9 @@
     color: var(--color-accent-grean);
     box-shadow: var(--shadow-button-hover);
   }
+
+  &--wide {
+    flex-grow: 1;
+    min-width: 175px;
+  }
 }

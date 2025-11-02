@@ -22,4 +22,5 @@ export interface Boss {
   maxHp: number,
   hp: number,
   xp: number,
+  stat: string,
 }

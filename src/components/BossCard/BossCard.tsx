@@ -1,5 +1,4 @@
 import './BossCard.scss'
-import classNames from 'classnames'
 import React from "react";
 import HpBar from "../HpBar/HpBar";
 
@@ -9,6 +8,7 @@ interface BossCardProps {
   leftMini: number
   totalMini: number
   hp: number
+  stat?: string,
   maxHp: number
   leftMobs: number
   totalMobs: number
@@ -20,6 +20,7 @@ const BossCard = ({
                     totalMini,
                     hp,
                     maxHp,
+                    stat,
                     leftMobs,
                     totalMobs,
                   }: BossCardProps) => {
@@ -61,6 +62,7 @@ const BossCard = ({
             />
             <p className="boss-card__miniboss-number">{leftMini}/{totalMini}</p>
           </div>
+          <div className="test">{stat}</div>
         </div>
         <HpBar
           hp={hp}

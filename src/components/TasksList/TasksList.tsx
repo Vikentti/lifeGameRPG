@@ -1,14 +1,7 @@
 import './TasksList.scss'
 import classNames from 'classnames'
-import {useDispatch, useSelector} from "react-redux";
-import type {AppDispatch, RootState} from "../../states/store";
-import {damageBoss, removeBoss} from "../../states/boss/bossSlice"
 import type {Boss, miniBoss, mob} from "../../types/bossTypes";
 import {Link} from "react-router";
-import Button from "../Button/Button";
-import {addXp} from "../../states/User/userSlice";
-import {removeMiniBoss} from "../../states/boss/miniBossSlice";
-import {removeMob} from "../../states/boss/mobsSlice";
 import TaskCard from "../TaskCard/TaskCard";
 
 

@@ -1,6 +1,21 @@
 import type {User} from "../../types/useTypes"
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 
+const defaultUser: User = {
+  xp: 0,
+  name: "",
+  lvl: 0,
+  str: 0,
+  agi: 0,
+  luck: 0,
+  int: 0,
+  will: 0,
+  wisdom: 0,
+  craft: 0,
+  legacy: 0,
+  diplomacy: 0,
+  charisma: 0
+};
 
 interface UserState {
   user: User
@@ -9,15 +24,20 @@ interface UserState {
 const loadFromLocalStorage = (): User => {
 
   if (typeof window === 'undefined') {
-    return {xp: 0, name: "", lvl: 0}
+    return defaultUser
   }
 
   try {
     const data = localStorage.getItem('user')
-    return data ? JSON.parse(data) : {xp: 0, name: "", lvl: 0}
+
+    if (data) {
+      const parsed = JSON.parse(data)
+      return {...defaultUser, ...parsed}
+    }
+    return defaultUser;
   } catch {
 
-    return {xp: 0, name: "", lvl: 0}
+    return defaultUser
   }
 }
 
@@ -41,8 +61,11 @@ const userSlice = createSlice({
       localStorage.setItem('user', JSON.stringify(state.user))
     },
     resetUser: (state, action: PayloadAction<number>) => {
-        state.user.xp = action.payload
-        state.user.lvl = action.payload
+      state.user = {
+        ...defaultUser,
+        xp: action.payload,
+        lvl: action.payload
+      };
 
       localStorage.setItem('user', JSON.stringify(state.user))
     }

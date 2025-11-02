@@ -1,7 +1,7 @@
 import './TasksDetails.scss'
 import {useParams} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useMemo, useRef, useState} from "react";
+import {useMemo, useRef, useState} from "react";
 import type {AppDispatch, RootState} from "../../../src/states/store";
 import Button from "../../../src/components/Button/Button";
 import TasksList from "../../../src/components/TasksList/TasksList";
@@ -14,8 +14,6 @@ import {
 import classNames from "classnames";
 import HydrationTasks
   from "../../../src/components/HydrationTasks/HydrationTasks";
-import {addHp} from "../../../src/states/boss/bossSlice";
-import HpBar from "../../../src/components/HpBar/HpBar";
 import BossCard from "../../../src/components/BossCard/BossCard";
 
 
@@ -40,6 +38,8 @@ const TasksDetails = () => {
   if (!task) {
     return <div>Задача не найдена!</div>
   }
+
+  const stat = task.stat
 
 
   const bossHp = task.hp
@@ -98,6 +98,7 @@ const TasksDetails = () => {
           leftMini={miniBossLeft}
           totalMini={totalMiniBosses}
           hp={task.hp}
+          stat={stat}
           maxHp={task.maxHp}
           leftMobs={mobsLeft}
           totalMobs={totalMobs}
@@ -113,7 +114,9 @@ const TasksDetails = () => {
               inputRef={inputRef}
               label={label}
             />
+
             <div className="tasks-details__form-types">
+              <p className="tasks-details__form-types-text">Choose Task Difficulty</p>
               <Button
                 className={classNames('tasks-details__form-types-button', {
                   'is-active': activeType === 'mob'
@@ -121,6 +124,7 @@ const TasksDetails = () => {
                 type={"button"}
                 onClick={() => setActiveType('mob')}
                 title="Mob"
+                mod="wide"
               />
               <Button
                 className={classNames('tasks-details__form-types-button', {
@@ -129,31 +133,31 @@ const TasksDetails = () => {
                 type={"button"}
                 onClick={() => setActiveType('miniBoss')}
                 title="Mini Boss"
+                mod="wide"
               />
 
             </div>
             <Button
+              className="tasks-details__form-submit-button"
               type={"submit"}
               title="Add"
             />
           </form>
 
           <div className="tasks-details__list">
-            <div className="tasks-details__list-mobs">
+            {mobsArr.length > 0 && <div className="tasks-details__list-mobs">
               <h3 className="tasks-details__list-title">Mobs</h3>
-              <TasksList
-                arrayToMap={mobsArr}
-                isMob
-              />
-            </div>
+              <TasksList arrayToMap={mobsArr} />
+            </div>}
 
-            <div className="tasks-details__list-mini-boss">
-              <h3 className="tasks-details__list-title">Mini Bosses</h3>
-              <TasksList
-                arrayToMap={miniBossArr}
-                isMiniBoss
-              />
-            </div>
+            {miniBossArr.length > 0 &&
+              <div className="tasks-details__list-mini-boss">
+                <h3 className="tasks-details__list-title">Mini Bosses</h3>
+                <TasksList
+                  arrayToMap={miniBossArr}
+                  isMiniBoss
+                />
+              </div>}
 
           </div>
         </div>

@@ -1,4 +1,46 @@
 
 .tasks-details {
+ &__body {
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   row-gap: 30px;
+ }
 
+  &__form {
+    display: grid;
+    row-gap: 8px;
+
+    &-types {
+      display: grid;
+      gap: 8px 50px;
+      grid-template-columns: repeat(2, 1fr);
+
+      &-button.is-active {
+        border-color: var(--color-accent-yellow);
+        color: var(--color-accent-yellow);
+      }
+
+      &-text {
+        grid-column: -1/1;
+        text-align: center;
+        font-size: 25px;
+      }
+    }
+  }
+
+  &__list {
+    display: flex;
+    column-gap: 90px;
+
+    &-title {
+      @include fluid-text(30, 20);
+
+      padding-bottom: 10px;
+      font-family: var(--font-famaly-heders-second);
+      text-align: center;
+
+    }
+  }
 }

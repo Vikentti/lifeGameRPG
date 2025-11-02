@@ -3,6 +3,7 @@ import type {Boss} from "../../types/bossTypes";
 import {nanoid} from 'nanoid'
 import {addMob} from "./mobsSlice";
 import {addMiniBoss} from "./miniBossSlice";
+import checkTask from "./StatsArr/Statistic"
 
 interface bossState {
   bosses: Boss[]
@@ -30,15 +31,23 @@ const bossesSlice = createSlice({
   name: "bosses",
   initialState,
   reducers: {
-    addBoss: (state, action: PayloadAction<Omit<Boss, 'id' | 'xp' | 'hp' | 'maxHp'>>) => {
+    addBoss: (state, action: PayloadAction<Omit<Boss, 'id' | 'xp' | 'hp' | 'maxHp' | 'stat'>>) => {
       const baseHp = Math.floor(Math.random() * (300 - 200) + 200)
+
+      const stat = checkTask(action.payload.title)
+
+      console.log(stat[0])
+
+
       const newBoss = {
         ...action.payload,
         id: nanoid(),
         maxHp: baseHp,
         hp: baseHp,
         xp: baseHp,
+        stat: `${stat[0]}`,
       }
+
       state.bosses.push(newBoss)
       localStorage.setItem('bosses', JSON.stringify(state.bosses))
     },

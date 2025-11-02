@@ -10,30 +10,35 @@ interface ButtonProps {
   onClick?: () => void
   type: ButtonType
   ref?: null
+  mod?: string
 }
-
 
 
 const Button =
   forwardRef<HTMLButtonElement, ButtonProps>
-  ((props: ButtonProps, ref ) => {
-  const {
-    className,
-    title,
-    onClick,
-    type = "button",
-  } = props
+  ((props: ButtonProps, ref) => {
+    const {
+      className,
+      title,
+      onClick,
+      type = "button",
 
-  return (
-    <button
-      className={classNames(className, 'button')}
-      type={type}
-      onClick={onClick}
-      ref={ref}
-    >
-      {title}
-    </button>
-  )
-})
+      //  "wide" & default ""
+      mod
+    } = props
+
+    return (
+      <button
+        className={classNames(className, 'button', {
+          [` button--${mod}`]: mod
+        })}
+        type={type}
+        onClick={onClick}
+        ref={ref}
+      >
+        {title}
+      </button>
+    )
+  })
 
 export default Button
