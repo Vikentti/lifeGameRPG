@@ -18,5 +18,15 @@
   &--wide {
     flex-grow: 1;
     min-width: 175px;
+    max-width: 600px;
+  }
+
+  &--kill {
+    width: 500px;
+    align-self: center;
+
+    @include hover{
+      background-color: #240808;
+    }
   }
 }

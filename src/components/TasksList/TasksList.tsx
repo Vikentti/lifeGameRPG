@@ -31,7 +31,7 @@ const TasksList = ({
         'tasks-list--columns': isColumns,
       })}
     >
-      {arrayToMap && arrayToMap.map(({title, id, xp, hp, maxHp}) => (
+      {arrayToMap && arrayToMap.map(({title, id, xp, hp, maxHp, stat}) => (
         <li
           className="tasks-item"
           key={id}
@@ -46,6 +46,7 @@ const TasksList = ({
                 xp={xp}
                 hp={hp}
                 maxHp={maxHp}
+                stat={stat}
                 id={id}
                 isBoss
               />
@@ -54,6 +55,7 @@ const TasksList = ({
               title={title}
               xp={xp}
               hp={hp}
+              stat={stat}
               maxHp={maxHp}
               id={id}
               isMiniBoss={isMiniBoss}

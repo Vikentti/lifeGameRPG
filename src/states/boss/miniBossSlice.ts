@@ -2,6 +2,7 @@ import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import type {miniBoss} from "../../types/bossTypes";
 import {nanoid} from "nanoid";
 import type {RootState} from "../store";
+import checkTask from "./StatsArr/Statistic";
 
 interface miniBossState {
   miniBosses: miniBoss[]
@@ -47,11 +48,14 @@ const miniBossSlice = createSlice({
       bossId: string,
       hp: number
     }>) => {
+      const stat = checkTask(action.payload.title)
+
       const newMiniBoss = {
         ...action.payload,
         id: nanoid(),
         xp: action.payload.hp,
         maxHp: action.payload.hp,
+        stat: `${stat[0]}`
       }
       state.miniBosses.push(newMiniBoss)
       state.totalMiniBosses[action.payload.bossId] =

@@ -8,7 +8,7 @@ import {removeMob} from "../../states/boss/mobsSlice";
 import {useDispatch, useSelector} from "react-redux";
 import type {AppDispatch, RootState} from "../../states/store";
 import HpBar from "../HpBar/HpBar";
-import {addStat} from "../../states/User/userSlice";
+import {addStat, addXp} from "../../states/User/userSlice";
 
 interface TaskCardProps {
   className?: string
@@ -19,6 +19,7 @@ interface TaskCardProps {
   id: string
   isBoss?: boolean
   isMiniBoss?: boolean
+  stat?: string
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({
@@ -26,6 +27,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
                                              title,
                                              maxHp,
                                              xp,
+                                             stat,
                                              hp,
                                              id,
                                              isBoss,
@@ -35,32 +37,34 @@ const TaskCard: React.FC<TaskCardProps> = ({
   const dispatch: AppDispatch = useDispatch()
 
   const mobs = useSelector((state: RootState) => state.mobs.mobs)
-    const miniBosses = useSelector((state: RootState) => state.miniBosses.miniBosses)
+  const miniBosses = useSelector((state: RootState) => state.miniBosses.miniBosses)
 
+  const currentStatNumber = isMiniBoss ? 4 : 1
+
+  const isStat = stat !== undefined && stat !== "undefined";
 
   const handlerDelete = (id: string) => {
-
-    if (isBoss) {
-      dispatch(removeBoss(id))
-    }
     if (isMiniBoss) {
       const miniBoss = [...miniBosses].find((item) => item.id === id)
       if (miniBoss) {
-        dispatch(damageBoss({ id: miniBoss.bossId, damage: miniBoss.hp }))
-        dispatch(removeMiniBoss({id : id}))
+        dispatch(damageBoss({id: miniBoss.bossId, damage: miniBoss.hp}))
+        dispatch(addStat({stat: miniBoss.stat, howMuch: 4}))
+        dispatch(addXp(miniBoss.xp))
+        dispatch(removeMiniBoss({id: id}))
       }
 
     } else {
       const mob = [...mobs].find((item) => item.id === id)
       if (mob) {
-        dispatch(addStat({stat: mob.stat, howMuch: 10}))
-        dispatch(damageBoss({ id: mob.bossId, damage: mob.hp }))
-        dispatch(removeMob({id : id}))
+        dispatch(damageBoss({id: mob.bossId, damage: mob.hp}))
+        dispatch(addStat({stat: mob.stat, howMuch: 1}))
+        dispatch(addXp(mob.xp))
+        dispatch(removeMob({id: id}))
       }
     }
   }
 
-  const handlerSimpleDelete =(id: string) => {
+  const handlerSimpleDelete = (id: string) => {
     if (isBoss) {
       dispatch(removeBoss(id))
     }
@@ -68,14 +72,18 @@ const TaskCard: React.FC<TaskCardProps> = ({
       const miniBoss = [...miniBosses].find((item) => item.id === id)
       if (miniBoss) {
         dispatch(addHp({id: miniBoss.bossId, upHp: miniBoss.hp}))
-        dispatch(removeMiniBoss({id : id, noComplete : true, bossId : miniBoss.bossId}))
+        dispatch(removeMiniBoss({
+          id: id,
+          noComplete: true,
+          bossId: miniBoss.bossId
+        }))
       }
 
     } else {
       const mob = [...mobs].find((item) => item.id === id)
       if (mob) {
         dispatch(addHp({id: mob.bossId, upHp: mob.hp}))
-        dispatch(removeMob({id : id, noComplete : true, bossId : mob.bossId}))
+        dispatch(removeMob({id: id, noComplete: true, bossId: mob.bossId}))
       }
     }
   }
@@ -85,6 +93,11 @@ const TaskCard: React.FC<TaskCardProps> = ({
     isBoss ? 'src/assets/icons/overlord-helm.svg' :
       isMiniBoss ? '/src/assets/icons/brutal-helm.svg' : '/src/assets/icons/horned-helm.svg'
 
+  const statElement = stat ? (
+    <p className="task-card__stats-stat">
+      {stat} : {currentStatNumber}
+    </p>
+  ) : null;
 
   return (
     <div
@@ -108,7 +121,11 @@ const TaskCard: React.FC<TaskCardProps> = ({
           <p className="task-card__stats-text">Prize for completion:</p>
           <div className="task-card__stats-completion">
             <p className="task-card__stats-xp">{xp} XP</p>
-            <p className="task-card__stats-har">5 INT</p>
+            {isStat && (
+              <p className="task-card__stats-stat">
+                {stat} : {currentStatNumber}
+              </p>
+            )}
           </div>
           <HpBar
             hp={hp}

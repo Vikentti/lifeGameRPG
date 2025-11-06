@@ -1,6 +1,13 @@
 import './BossCard.scss'
-import React from "react";
+import React, {useState} from "react";
 import HpBar from "../HpBar/HpBar";
+import Button from "../Button/Button";
+import {useDispatch} from "react-redux";
+import type {AppDispatch} from "../../states/store";
+import {addStat, addXp} from "../../states/User/userSlice";
+import {removeBoss} from "../../states/boss/bossSlice";
+import {Link} from "react-router";
+import PopUpBossKill from "../PopUpBossKill/PopUpBossKill";
 
 interface BossCardProps {
   className?: string
@@ -12,6 +19,7 @@ interface BossCardProps {
   maxHp: number
   leftMobs: number
   totalMobs: number
+  boss: any
 }
 
 const BossCard = ({
@@ -23,7 +31,29 @@ const BossCard = ({
                     stat,
                     leftMobs,
                     totalMobs,
+                    boss,
                   }: BossCardProps) => {
+
+  const dispatch: AppDispatch = useDispatch()
+
+  const canKill = (leftMobs === 0 && leftMini === 0 && totalMobs > 0 && totalMini > 0)
+
+  const [isOpen, setIsOpen] = useState(false)
+
+
+  const handleKill = () => {
+    if (canKill) {
+      dispatch(addStat({stat: boss.stat, howMuch: 10}))
+      dispatch(addXp(boss.xp))
+      dispatch(removeBoss(boss.id))
+    } else {
+      setIsOpen(true)
+    }
+  }
+
+  const handelOpen = () => {
+    setIsOpen(!isOpen)
+  }
 
 
   return (
@@ -62,13 +92,37 @@ const BossCard = ({
             />
             <p className="boss-card__miniboss-number">{leftMini}/{totalMini}</p>
           </div>
-          <div className="test">{stat}</div>
+          {stat !== 'undefined' &&
+            <div className="boss-card__stat">{stat}</div>}
         </div>
         <HpBar
           hp={hp}
           maxHp={maxHp}
         />
+
+        {canKill && (<Link
+          to='/allTasks'
+          className="boss-card__delete-button"
+        >
+          <Button
+            type={"button"}
+            onClick={handleKill}
+            title="Kill Boss"
+            mod="kill"
+          />
+        </Link>)}
+
+        {!canKill && (
+          <Button
+            type={"button"}
+            onClick={handleKill}
+            title="Kill Boss"
+            mod="kill"
+          />
+        )}
+
       </div>
+      <PopUpBossKill isOpen={isOpen} toogle={handelOpen} />
     </div>
   )
 }

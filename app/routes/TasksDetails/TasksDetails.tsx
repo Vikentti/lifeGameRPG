@@ -41,10 +41,6 @@ const TasksDetails = () => {
 
   const stat = task.stat
 
-
-  const bossHp = task.hp
-  const bossMaxHp = task.maxHp
-
   const handlerChange = (e: any) => {
     setTextValue(e.target.value)
   }
@@ -95,13 +91,14 @@ const TasksDetails = () => {
       >
         <BossCard
           title={task.title}
-          leftMini={miniBossLeft}
-          totalMini={totalMiniBosses}
           hp={task.hp}
           stat={stat}
           maxHp={task.maxHp}
+          leftMini={miniBossLeft}
+          totalMini={totalMiniBosses}
           leftMobs={mobsLeft}
           totalMobs={totalMobs}
+          boss={task}
         />
         <div className="tasks-details__body">
           <form
