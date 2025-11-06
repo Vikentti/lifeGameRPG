@@ -5,6 +5,7 @@ export interface mob {
   hp: number,
   xp: number,
   maxHp: number
+  stat: string,
 }
 
 export interface miniBoss {
@@ -14,6 +15,7 @@ export interface miniBoss {
   maxHp: number,
   hp: number,
   xp: number,
+  stat: string,
 }
 
 export interface Boss {

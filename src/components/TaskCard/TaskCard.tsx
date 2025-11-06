@@ -8,6 +8,7 @@ import {removeMob} from "../../states/boss/mobsSlice";
 import {useDispatch, useSelector} from "react-redux";
 import type {AppDispatch, RootState} from "../../states/store";
 import HpBar from "../HpBar/HpBar";
+import {addStat} from "../../states/User/userSlice";
 
 interface TaskCardProps {
   className?: string
@@ -52,6 +53,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
     } else {
       const mob = [...mobs].find((item) => item.id === id)
       if (mob) {
+        dispatch(addStat({stat: mob.stat, howMuch: 10}))
         dispatch(damageBoss({ id: mob.bossId, damage: mob.hp }))
         dispatch(removeMob({id : id}))
       }

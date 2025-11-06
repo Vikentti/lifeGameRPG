@@ -17,9 +17,12 @@ const defaultUser: User = {
   charisma: 0
 };
 
+
+
 interface UserState {
   user: User
 }
+
 
 const loadFromLocalStorage = (): User => {
 
@@ -68,6 +71,17 @@ const userSlice = createSlice({
       };
 
       localStorage.setItem('user', JSON.stringify(state.user))
+    },
+    addStat: (state, action: PayloadAction<{
+      stat: string;
+      howMuch: number;
+    }>) => {
+      const {stat, howMuch} = action.payload;
+
+      if (stat in state.user && typeof state.user[stat as keyof User] === 'number') {
+        (state.user[stat as keyof User] as number) += howMuch;
+        localStorage.setItem('user', JSON.stringify(state.user));
+      }
     }
   }
 })
@@ -75,6 +89,7 @@ const userSlice = createSlice({
 export const {
   addXp,
   resetUser,
+  addStat,
 } = userSlice.actions
 
 export default userSlice.reducer

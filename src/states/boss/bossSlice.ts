@@ -36,9 +36,6 @@ const bossesSlice = createSlice({
 
       const stat = checkTask(action.payload.title)
 
-      console.log(stat[0])
-
-
       const newBoss = {
         ...action.payload,
         id: nanoid(),
