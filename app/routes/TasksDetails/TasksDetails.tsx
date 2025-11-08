@@ -1,7 +1,7 @@
 import './TasksDetails.scss'
-import {useParams} from "react-router";
+import {useNavigate, useParams} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
-import {useMemo, useRef, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import type {AppDispatch, RootState} from "../../../src/states/store";
 import Button from "../../../src/components/Button/Button";
 import TasksList from "../../../src/components/TasksList/TasksList";
@@ -20,9 +20,10 @@ import BossCard from "../../../src/components/BossCard/BossCard";
 const TasksDetails = () => {
 
   const {taskId} = useParams()
-  const tasks = useSelector((state: RootState) => state.bosses.bosses)
-  const miniBoss = useSelector((state: RootState) => state.miniBosses.miniBosses)
-  const mobs = useSelector((state: RootState) => state.mobs.mobs)
+  const navigate = useNavigate()
+  const tasks = useSelector((state: RootState) => state.bosses?.bosses ?? [])
+  const miniBoss = useSelector((state: RootState) => state.miniBosses?.miniBosses ?? [])
+  const mobs = useSelector((state: RootState) => state.mobs?.mobs ?? [])
   const dispatch: AppDispatch = useDispatch()
   const [textValue, setTextValue] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
@@ -31,15 +32,20 @@ const TasksDetails = () => {
 
   const label = `Add new ${activeType === 'mob' ? 'Mob' : 'Mini Boss'}`
 
+  const handleActiveTypeMob = () => {
+    setActiveType('mob')
+    inputRef.current?.focus()
+  }
+
+  const handleActiveTypeMiniBoss = () => {
+    setActiveType('miniBoss')
+    inputRef.current?.focus()
+  }
+
   const task = useMemo(() => {
     return tasks.find(t => t.id === taskId)
   }, [tasks, taskId])
 
-  if (!task) {
-    return <div>Задача не найдена!</div>
-  }
-
-  const stat = task.stat
 
   const handlerChange = (e: any) => {
     setTextValue(e.target.value)
@@ -68,11 +74,14 @@ const TasksDetails = () => {
     }
   }
 
-  const mobsArr = [...mobs].filter((i) => i.bossId === taskId)
-  const miniBossArr = [...miniBoss].filter((i) => i.bossId === taskId)
-
-  const miniBossLeft = miniBossArr.length
-  const mobsLeft = mobsArr.length
+  const mobsArr = useMemo(() =>
+      mobs?.filter((i) => i.bossId === taskId) ?? [],
+    [mobs, taskId]
+  )
+  const miniBossArr = useMemo(() =>
+      miniBoss?.filter((i) => i.bossId === taskId) ?? [],
+    [miniBoss, taskId]
+  )
 
 
   const totalMiniBosses = useSelector((state: RootState) =>
@@ -83,6 +92,19 @@ const TasksDetails = () => {
     selectedTotalMobs(state, taskId ? taskId : '')
   )
 
+  useEffect(() => {
+    if (!task) {
+      navigate('/allTasks')
+    }
+  }, [task, navigate]);
+
+  if (!task) {
+    return <div>Задача не найдена!</div>
+  }
+
+  const miniBossLeft = miniBossArr.length
+  const mobsLeft = mobsArr.length
+  const stat = task?.stat
 
   return (
     <HydrationTasks>
@@ -119,7 +141,9 @@ const TasksDetails = () => {
                   'is-active': activeType === 'mob'
                 })}
                 type={"button"}
-                onClick={() => setActiveType('mob')}
+                onClick={() => handleActiveTypeMob()
+
+                }
                 title="Mob"
                 mod="wide"
               />
@@ -128,7 +152,7 @@ const TasksDetails = () => {
                   'is-active': activeType === 'miniBoss'
                 })}
                 type={"button"}
-                onClick={() => setActiveType('miniBoss')}
+                onClick={() => handleActiveTypeMiniBoss()}
                 title="Mini Boss"
                 mod="wide"
               />

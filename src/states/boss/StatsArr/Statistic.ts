@@ -249,7 +249,6 @@ export default function checkTask(taskText: string) {
 
   const result = [...set]
 
-  console.log(result)
 
   return result;
 }
