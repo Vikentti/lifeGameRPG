@@ -3,7 +3,7 @@ import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 
 const defaultUser: User = {
   xp: 0,
-  name: "",
+  name: "User",
   lvl: 0,
   str: 0,
   agi: 0,
@@ -49,7 +49,7 @@ const initialState: UserState = {
 }
 
 const userSlice = createSlice({
-  name: "user",
+  name: "User",
   initialState,
   reducers: {
     addXp: (state, action: PayloadAction<number>) => {
@@ -82,6 +82,11 @@ const userSlice = createSlice({
         (state.user[stat as keyof User] as number) += howMuch;
         localStorage.setItem('user', JSON.stringify(state.user));
       }
+    },
+    setUserName: (state, action: PayloadAction<string>) => {
+      state.user.name = action.payload
+
+      localStorage.setItem('user', JSON.stringify(state.user))
     }
   }
 })
@@ -90,6 +95,7 @@ export const {
   addXp,
   resetUser,
   addStat,
+  setUserName,
 } = userSlice.actions
 
 export default userSlice.reducer

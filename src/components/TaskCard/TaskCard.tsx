@@ -39,7 +39,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
   const mobs = useSelector((state: RootState) => state.mobs.mobs)
   const miniBosses = useSelector((state: RootState) => state.miniBosses.miniBosses)
 
-  const currentStatNumber = isMiniBoss ? 4 : 1
+  const currentStatNumber = isBoss ?  10 : isMiniBoss ? 4 : 1
 
   const isStat = stat !== undefined && stat !== "undefined";
 
@@ -105,7 +105,11 @@ const TaskCard: React.FC<TaskCardProps> = ({
     >
       <button
         className="task-card__delete-task-button"
-        onClick={() => handlerSimpleDelete(id)}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handlerSimpleDelete(id);
+        }}
       />
       <img
         className="task-card__image"

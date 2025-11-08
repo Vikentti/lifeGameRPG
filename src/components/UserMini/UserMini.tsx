@@ -20,6 +20,7 @@ const UserMini = ({className}: userMiniProps) => {
   const listRef = useRef<HTMLUListElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const xp = useSelector((state: RootState) => state.user.user.xp)
+  const name = useSelector((state: RootState) => state.user.user.name)
 
 
   const lvl = useSelector((state: RootState) => state.user.user.lvl)
@@ -72,13 +73,14 @@ const UserMini = ({className}: userMiniProps) => {
   }
 
 
+
   return (
     <div
       className={classNames(className, 'user-mini')}
     >
       <div className="user-mini__stats">
         <ThemeChangeButton />
-        <p className="user-mini_name">Бочаров Викентий</p>
+        <p className="user-mini_name">{name}</p>
         <div className="user-mini_lvl">
           <p className="user-mini_lvl-title">LVL</p>
           <p className="puser-mini_lvl-level">{lvl}</p>

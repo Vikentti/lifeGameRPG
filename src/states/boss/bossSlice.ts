@@ -7,25 +7,39 @@ import checkTask from "./StatsArr/Statistic"
 
 interface bossState {
   bosses: Boss[]
+  totalBosses: Record<string, number>
 }
 
-const loadFromLocalStorage = (): Boss[] => {
+const loadFromLocalStorage = (): bossState => {
 
   if (typeof window === 'undefined') {
-    return [];
+    return {bosses: [], totalBosses: {}};
   }
 
   try {
     const data = localStorage.getItem('bosses')
-    return data ? JSON.parse(data) : []
+    if (data) {
+      const parse = JSON.parse(data)
+
+      if (Array.isArray(parse)) {
+        return {
+          bosses: parse,
+          totalBosses: parse.reduce((acc, boss) => {
+            acc[boss.id] = (acc[boss.id] || 0) + 1
+            return acc
+          }, {} as Record<string, number>)
+        }
+      }
+      return parse
+    }
+    return {bosses: [], totalBosses: {}};
   } catch {
-    return []
+    return {bosses: [], totalBosses: {}};
   }
 }
 
-const initialState: bossState = {
-  bosses: loadFromLocalStorage()
-}
+const initialState: bossState = loadFromLocalStorage()
+
 
 const bossesSlice = createSlice({
   name: "bosses",
@@ -46,7 +60,9 @@ const bossesSlice = createSlice({
       }
 
       state.bosses.push(newBoss)
-      localStorage.setItem('bosses', JSON.stringify(state.bosses))
+      state.totalBosses[newBoss.id] =
+        (state.totalBosses[newBoss.id] || 0) + 1
+      localStorage.setItem('bosses', JSON.stringify(state))
     },
 
     removeBoss: (state, action: PayloadAction<string>) => {
@@ -96,7 +112,7 @@ const bossesSlice = createSlice({
           targetBoss.hp += action.payload.hp
           targetBoss.maxHp += action.payload.hp
         }
-
+        localStorage.setItem('bosses', JSON.stringify(state.bosses))
       })
       .addCase(addMiniBoss, (state, action: PayloadAction<{
         bossId: string,

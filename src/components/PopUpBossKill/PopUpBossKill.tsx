@@ -1,18 +1,35 @@
 import './PopUpBossKill.scss'
 import classNames from 'classnames'
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import Button from "../Button/Button";
 import {Link} from "react-router";
 
 interface PopUpBossKillProps {
   className?: string
   isOpen: boolean
-  toogle: () => void
+  toggle: () => void
 }
 
-const PopUpBossKill = ({className, isOpen, toogle}: PopUpBossKillProps) => {
+const PopUpBossKill = ({className, isOpen, toggle}: PopUpBossKillProps) => {
 
+  const popUpRef = useRef<HTMLDivElement>(null)
 
+  useEffect(() => {
+    const closePopUp = (event: MouseEvent) => {
+      if (
+        isOpen &&
+        popUpRef.current &&
+        !popUpRef.current.contains(event.target as Node)
+      ) {
+        toggle();
+      }
+    }
+    document.addEventListener("mousedown", closePopUp)
+
+    return () => {
+      document.removeEventListener("mousedown", closePopUp)
+    }
+  }, [isOpen]);
 
 
   return (
@@ -20,9 +37,11 @@ const PopUpBossKill = ({className, isOpen, toogle}: PopUpBossKillProps) => {
       {isOpen && (
         <div
           className={classNames(className, 'pop-up-boss-kill')}
+          ref={popUpRef}
         >
           <div className="pop-up-boss-kill__body">
-            <h1 className="pop-up-boss-kill__title">To kill Boss you need to kill at least <br/> one mob and one mini boss</h1>
+            <h1 className="pop-up-boss-kill__title">To kill Boss you need to kill at least <br /> one mob and one mini boss
+            </h1>
             <p className="pop-up-boss-kill__text">If you have no mobs & mini bosses add them</p>
             <p className="pop-up-boss-kill__text-helper">To understand why this is necessary, go to the rules page</p>
           </div>
@@ -30,10 +49,10 @@ const PopUpBossKill = ({className, isOpen, toogle}: PopUpBossKillProps) => {
           <div className="pop-up-boss-kill__buttons">
             <Button
               type={"button"}
-              onClick={toogle}
+              onClick={toggle}
               title="Close Window"
             />
-            <Link to="/rules" >
+            <Link to="/rules">
               <Button
                 type={"button"}
                 title="Go to rules"

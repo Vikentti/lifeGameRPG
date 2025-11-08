@@ -122,7 +122,7 @@ const BossCard = ({
         )}
 
       </div>
-      <PopUpBossKill isOpen={isOpen} toogle={handelOpen} />
+      <PopUpBossKill isOpen={isOpen} toggle={handelOpen} />
     </div>
   )
 }
