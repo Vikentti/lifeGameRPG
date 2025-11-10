@@ -1,6 +1,6 @@
 import './TaskCard.scss'
 import classNames from 'classnames'
-import React from "react";
+import React, {useContext, useState} from "react";
 import Button from "../Button/Button";
 import {addHp, damageBoss, removeBoss} from "../../states/boss/bossSlice";
 import {removeMiniBoss} from "../../states/boss/miniBossSlice";
@@ -9,6 +9,9 @@ import {useDispatch, useSelector} from "react-redux";
 import type {AppDispatch, RootState} from "../../states/store";
 import HpBar from "../HpBar/HpBar";
 import {addStat, addXp} from "../../states/User/userSlice";
+import {
+  CompletePopUpContext
+} from "../../hookes/CompletePopUpContext/CompletePopUpContext";
 
 interface TaskCardProps {
   className?: string
@@ -34,14 +37,32 @@ const TaskCard: React.FC<TaskCardProps> = ({
                                              isMiniBoss
                                            }) => {
 
+
+  const {
+    setPopUpTitle,
+    setXpGained,
+    setActivePopUp,
+    setCharacteristic,
+  } = useContext(CompletePopUpContext)
+
+
   const dispatch: AppDispatch = useDispatch()
 
   const mobs = useSelector((state: RootState) => state.mobs.mobs)
   const miniBosses = useSelector((state: RootState) => state.miniBosses.miniBosses)
 
-  const currentStatNumber = isBoss ?  10 : isMiniBoss ? 4 : 1
+  const currentStatNumber = isBoss ? 10 : isMiniBoss ? 4 : 1
 
   const isStat = stat !== undefined && stat !== "undefined";
+
+  const handlePopUpChange = (item: any) => {
+
+    const Characteristic = item.stat !== 'undefined' ? item.stat : ''
+
+    setPopUpTitle("Mini Boss")
+    setXpGained(item.xp)
+    setCharacteristic(Characteristic)
+  }
 
   const handlerDelete = (id: string) => {
     if (isMiniBoss) {
@@ -50,6 +71,8 @@ const TaskCard: React.FC<TaskCardProps> = ({
         dispatch(damageBoss({id: miniBoss.bossId, damage: miniBoss.hp}))
         dispatch(addStat({stat: miniBoss.stat, howMuch: 4}))
         dispatch(addXp(miniBoss.xp))
+        handlePopUpChange(miniBoss)
+        setActivePopUp(true)
         dispatch(removeMiniBoss({id: id}))
       }
 

@@ -1,7 +1,7 @@
 import './TasksDetails.scss'
 import {useNavigate, useParams} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useMemo, useRef, useState} from "react";
+import {useContext, useEffect, useMemo, useRef, useState} from "react";
 import type {AppDispatch, RootState} from "../../../src/states/store";
 import Button from "../../../src/components/Button/Button";
 import TasksList from "../../../src/components/TasksList/TasksList";
@@ -15,6 +15,10 @@ import classNames from "classnames";
 import HydrationTasks
   from "../../../src/components/HydrationTasks/HydrationTasks";
 import BossCard from "../../../src/components/BossCard/BossCard";
+import CompletePopUp from "../../../src/components/CompletePopUp/CompletePopUp";
+import {
+  CompletePopUpContext
+} from "../../../src/hookes/CompletePopUpContext/CompletePopUpContext";
 
 
 const TasksDetails = () => {
@@ -28,6 +32,14 @@ const TasksDetails = () => {
   const [textValue, setTextValue] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
   const [activeType, setActiveType] = useState<'mob' | 'miniBoss'>('mob')
+
+  const {
+    activePopUp,
+    popUpTitle,
+    xpGained,
+    characteristic,
+    setActivePopUp,
+  } = useContext(CompletePopUpContext)
 
 
   const label = `Add new ${activeType === 'mob' ? 'Mob' : 'Mini Boss'}`
@@ -59,13 +71,15 @@ const TasksDetails = () => {
         dispatch(addMob({
           title: textValue,
           bossId: taskId,
-          hp: Math.floor(Math.random() * (50 - 20) + 20)
+          hp: Math.floor(Math.random() * (50 - 20) + 20),
+          stat: task ? task.stat : ''
         }))
       } else {
         dispatch(addMiniBoss({
           title: textValue,
           bossId: taskId,
-          hp: Math.floor(Math.random() * (100 - 50) + 50)
+          hp: Math.floor(Math.random() * (100 - 50) + 50),
+          stat: task ? task.stat : ''
         }))
       }
 
@@ -105,6 +119,10 @@ const TasksDetails = () => {
   const miniBossLeft = miniBossArr.length
   const mobsLeft = mobsArr.length
   const stat = task?.stat
+
+  useEffect(() => {
+    setTimeout(() => setActivePopUp(false), 5000)
+  }, [activePopUp]);
 
   return (
     <HydrationTasks>
@@ -184,6 +202,12 @@ const TasksDetails = () => {
         </div>
 
       </div>
+      <CompletePopUp
+        isActive={activePopUp}
+        title={popUpTitle}
+        xp={xpGained}
+        stat={characteristic}
+      />
     </HydrationTasks>
   )
 }

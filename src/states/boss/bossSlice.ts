@@ -55,7 +55,7 @@ const bossesSlice = createSlice({
         id: nanoid(),
         maxHp: baseHp,
         hp: baseHp,
-        xp: baseHp,
+        xp: 100,
         stat: `${stat[0]}`,
       }
 

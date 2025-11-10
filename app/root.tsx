@@ -9,11 +9,14 @@ import {
 
 import type {Route} from "./+types/root";
 import '@/styles'
-import React from "react";
-import {Provider} from "react-redux"
-import {store} from "../src/states/store";
+import React, {useState} from "react";
+import {Provider, useDispatch, useSelector} from "react-redux"
+import {type AppDispatch, type RootState, store} from "../src/states/store";
 import Header from "../src/layouts/Header/Header";
 import Content from "../src/layouts/Content/Content";
+import {
+  CompletePopUpContext
+} from "../src/hookes/CompletePopUpContext/CompletePopUpContext";
 
 
 // export const links: Route.LinksFunction = () => [
@@ -29,7 +32,15 @@ import Content from "../src/layouts/Content/Content";
 //   },
 // ];
 
+
+
 export function Layout({children}: { children: React.ReactNode }) {
+
+  const [activePopUp, setActivePopUp] = useState(false)
+  const [popUpTitle, setPopUpTitle] = useState('')
+  const [xpGained, setXpGained] = useState(0)
+  const [characteristic, setCharacteristic] = useState('')
+
   return (
     <html lang="en">
     <head>
@@ -43,10 +54,17 @@ export function Layout({children}: { children: React.ReactNode }) {
     </head>
     <body>
     <Provider store={store}>
+      <CompletePopUpContext value={{
+        activePopUp, setActivePopUp,
+        popUpTitle, setPopUpTitle,
+        xpGained, setXpGained,
+        characteristic, setCharacteristic
+      }} >
       <Header />
       <Content>
         {children}
       </Content>
+      </CompletePopUpContext>
     </Provider>
     <ScrollRestoration />
     <Scripts />

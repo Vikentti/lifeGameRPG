@@ -46,16 +46,16 @@ const miniBossSlice = createSlice({
     addMiniBoss: (state, action: PayloadAction<{
       title: string,
       bossId: string,
-      hp: number
+      hp: number,
+      stat: string,
     }>) => {
       const stat = checkTask(action.payload.title)
 
       const newMiniBoss = {
         ...action.payload,
         id: nanoid(),
-        xp: action.payload.hp,
+        xp: 25,
         maxHp: action.payload.hp,
-        stat: `${stat[0]}`
       }
       state.miniBosses.push(newMiniBoss)
       state.totalMiniBosses[action.payload.bossId] =

@@ -1,0 +1,14 @@
+
+.complete-pop-up {
+  display: none;
+
+  &.is-active {
+    position: fixed;
+    display: flex;
+    top: 50%;
+    left: 50%;
+    background-color: red;
+    width: 300px;
+    height: 200px;
+  }
+}

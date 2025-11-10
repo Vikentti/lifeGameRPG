@@ -23,9 +23,6 @@ const Welcome = ({className}: WelcomeProps) => {
 
   const user = useSelector((state: RootState) => state.user.user)
 
-  const bosses = useSelector((state: RootState) => state.bosses)
-  const miniBosses = useSelector((state: RootState) => state.miniBosses)
-  const mobs = useSelector((state: RootState) => state.mobs)
 
   const formatDate = (date = new Date()) => {
     const formatNumber = (num: number): string => num.toString().padStart(2, '0');
@@ -57,18 +54,6 @@ const Welcome = ({className}: WelcomeProps) => {
 
   const statsArr = getStatsArr(user)
 
-  const bossesComplited = Object.keys(bosses.totalBosses).length - bosses.bosses.length
-
-  const miniBossesComplited = Object.keys(miniBosses.totalMiniBosses).length - miniBosses.miniBosses.length
-
-
-  const toDoArr = [
-    {
-      title: 'Bosses',
-      complited: `${(bosses.totalBosses.length) - (bosses.bosses.length)}`
-
-    },
-  ]
 
 
   return (

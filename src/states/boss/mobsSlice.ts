@@ -45,15 +45,16 @@ const mobsSlice = createSlice({
     addMob: (state, action: PayloadAction<{
       title: string,
       bossId: string,
-      hp: number
+      hp: number,
+      stat: string
     }>) => {
       const stat = checkTask(action.payload.title)
       const newMob = {
         ...action.payload,
         id: nanoid(),
-        xp: action.payload.hp,
+        xp: 10,
         maxHp: action.payload.hp,
-        stat: `${stat[0]}`
+
       }
       state.mobs.push(newMob)
 

@@ -8,7 +8,7 @@
     flex-direction: column;
     row-gap: 8px;
     padding: 20px 35px;
-    width: 800px;
+    width: 1000px;
     height: 250px;
 
     background-color: var(--color-bg-secondary);
@@ -24,7 +24,7 @@
 
   &__statistic {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     column-gap: 100px;
   }
 
@@ -40,8 +40,9 @@
   &__user-info {
     display: flex;
     flex-direction: column;
+//    align-items: end;
     row-gap: 20px;
-    flex-grow: 1;
+//    flex-grow: 1;
   }
   
   &__level {
