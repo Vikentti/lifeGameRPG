@@ -8,10 +8,17 @@ interface CompletePopUpProps {
   title: string
   xp: number,
   stat?: string
+  isBig?: boolean
 }
 
-const CompletePopUp = ({className, isActive, title,xp , stat}: CompletePopUpProps) => {
-
+const CompletePopUp = ({
+                         className,
+                         isActive,
+                         title,
+                         xp,
+                         stat,
+                         isBig
+                       }: CompletePopUpProps) => {
 
   return (
     <div
@@ -19,16 +26,30 @@ const CompletePopUp = ({className, isActive, title,xp , stat}: CompletePopUpProp
         'is-active': isActive
       })}
     >
-      <div className="compete-pop-up__body">
-        <div className="compete-pop-up__title">Congregation you completed {title}</div>
-        <div className="compete-pop-up__stats">
-          <p className="compete-pop-up__text"></p>
-          <div className="compete-pop-up__stats-xp">XP: {xp}</div>
-          {stat && (
-            <div className="compete-pop-up__stats-stat">{stat}: 10</div>
-          )}
+      {isBig && <div className="complete-pop-up__body">
+        <div className="complete-pop-up__title">Congregation you killed <span className="complete-pop-up__title-span">{title}</span></div>
+        <div className="complete-pop-up__stats">
+          <p className="complete-pop-up__text">Earned:</p>
+          <div className="complete-pop-up__stats-body">
+            <div className="complete-pop-up__stats-xp">XP: {xp}</div>
+            {stat && (
+              <div className="complete-pop-up__stats-stat">{stat}: 10</div>
+            )}
+          </div>
+
         </div>
-      </div>
+      </div>}
+      {!isBig &&
+        <div className="complete-pop-up__stats--alt">
+          <p className="complete-pop-up__text">Earned:</p>
+          <div className="complete-pop-up__stats-body">
+            <div className="complete-pop-up__stats-xp">XP: {xp}</div>
+            {stat && (
+              <div className="complete-pop-up__stats-stat">{stat}: 10</div>
+            )}
+          </div>
+        </div>
+      }
     </div>
   )
 }

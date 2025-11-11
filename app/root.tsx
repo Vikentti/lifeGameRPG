@@ -9,7 +9,7 @@ import {
 
 import type {Route} from "./+types/root";
 import '@/styles'
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Provider, useDispatch, useSelector} from "react-redux"
 import {type AppDispatch, type RootState, store} from "../src/states/store";
 import Header from "../src/layouts/Header/Header";
@@ -40,6 +40,10 @@ export function Layout({children}: { children: React.ReactNode }) {
   const [popUpTitle, setPopUpTitle] = useState('')
   const [xpGained, setXpGained] = useState(0)
   const [characteristic, setCharacteristic] = useState('')
+
+  useEffect(() => {
+    setTimeout(() => setActivePopUp(false), 5500)
+  }, [activePopUp]);
 
   return (
     <html lang="en">

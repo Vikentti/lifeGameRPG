@@ -12,7 +12,7 @@ function HydrationTasks({children} : {children: React.ReactNode}) {
   if (!isHydrated) {
     return (
       <div className="tasks-columns">
-        <div>Loading bosses...</div>
+        <div>Loading</div>
       </div>
     )
   }

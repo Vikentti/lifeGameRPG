@@ -1,5 +1,5 @@
 import './BossCard.scss'
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import HpBar from "../HpBar/HpBar";
 import Button from "../Button/Button";
 import {useDispatch} from "react-redux";
@@ -8,6 +8,9 @@ import {addStat, addXp} from "../../states/User/userSlice";
 import {removeBoss} from "../../states/boss/bossSlice";
 import {Link} from "react-router";
 import PopUpBossKill from "../PopUpBossKill/PopUpBossKill";
+import {
+  CompletePopUpContext
+} from "../../hookes/CompletePopUpContext/CompletePopUpContext";
 
 interface BossCardProps {
   className?: string
@@ -40,11 +43,21 @@ const BossCard = ({
 
   const [isOpen, setIsOpen] = useState(false)
 
+  const {
+    setPopUpTitle,
+    setXpGained,
+    setCharacteristic,
+    setActivePopUp} = useContext(CompletePopUpContext)
+
 
   const handleKill = () => {
     if (canKill) {
       dispatch(addStat({stat: boss.stat, howMuch: 10}))
       dispatch(addXp(boss.xp))
+      setCharacteristic(boss.stat)
+      setXpGained(boss.xp)
+      setPopUpTitle('Boss')
+      setActivePopUp(true)
       dispatch(removeBoss(boss.id))
     } else {
       setIsOpen(true)

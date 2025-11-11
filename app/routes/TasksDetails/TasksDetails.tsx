@@ -38,8 +38,7 @@ const TasksDetails = () => {
     popUpTitle,
     xpGained,
     characteristic,
-    setActivePopUp,
-  } = useContext(CompletePopUpContext)
+      } = useContext(CompletePopUpContext)
 
 
   const label = `Add new ${activeType === 'mob' ? 'Mob' : 'Mini Boss'}`
@@ -120,9 +119,6 @@ const TasksDetails = () => {
   const mobsLeft = mobsArr.length
   const stat = task?.stat
 
-  useEffect(() => {
-    setTimeout(() => setActivePopUp(false), 5000)
-  }, [activePopUp]);
 
   return (
     <HydrationTasks>
@@ -207,6 +203,7 @@ const TasksDetails = () => {
         title={popUpTitle}
         xp={xpGained}
         stat={characteristic}
+
       />
     </HydrationTasks>
   )

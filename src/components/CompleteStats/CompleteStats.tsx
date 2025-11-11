@@ -39,7 +39,7 @@ const CompleteStats = ({className}: CompleteStatsProps) => {
       <h2 className="complete-stats__title">Completed task </h2>
       <ul className="complete-stats__list">
         {completeArr.map(({title, completed}, index) => (
-          <li className="complete-stats__item">
+          <li className="complete-stats__item" key={index}>
             <div className="complete-stats__item-name">{title}</div>
             <div className="complete-stats__item-number">{completed}</div>
           </li>

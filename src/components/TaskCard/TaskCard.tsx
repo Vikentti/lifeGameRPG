@@ -55,13 +55,14 @@ const TaskCard: React.FC<TaskCardProps> = ({
 
   const isStat = stat !== undefined && stat !== "undefined";
 
+
   const handlePopUpChange = (item: any) => {
 
     const Characteristic = item.stat !== 'undefined' ? item.stat : ''
 
-    setPopUpTitle("Mini Boss")
     setXpGained(item.xp)
     setCharacteristic(Characteristic)
+    setActivePopUp(true)
   }
 
   const handlerDelete = (id: string) => {
@@ -71,8 +72,8 @@ const TaskCard: React.FC<TaskCardProps> = ({
         dispatch(damageBoss({id: miniBoss.bossId, damage: miniBoss.hp}))
         dispatch(addStat({stat: miniBoss.stat, howMuch: 4}))
         dispatch(addXp(miniBoss.xp))
+        setPopUpTitle("Mini Boss")
         handlePopUpChange(miniBoss)
-        setActivePopUp(true)
         dispatch(removeMiniBoss({id: id}))
       }
 
@@ -82,6 +83,8 @@ const TaskCard: React.FC<TaskCardProps> = ({
         dispatch(damageBoss({id: mob.bossId, damage: mob.hp}))
         dispatch(addStat({stat: mob.stat, howMuch: 1}))
         dispatch(addXp(mob.xp))
+        setPopUpTitle("Mob")
+        handlePopUpChange(mob)
         dispatch(removeMob({id: id}))
       }
     }

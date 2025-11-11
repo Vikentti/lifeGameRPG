@@ -4,7 +4,8 @@ import BurgerButton from "../../components/BurgerButton/BurgerButton";
 import {Link, useLocation} from "react-router";
 import {useEffect, useRef, useState} from "react";
 import UserMini from "../../components/UserMini/UserMini";
-import HydrationHeader from "../../components/HydrationTasks/HydrationHeader";
+
+import HydrationTasks from "../../components/HydrationTasks/HydrationTasks";
 
 
 interface linkInter {
@@ -92,7 +93,7 @@ const Header = () => {
 
 
   return (
-    <HydrationHeader>
+    <HydrationTasks>
       <header
         className={classNames('header')}
       >
@@ -139,7 +140,7 @@ const Header = () => {
           <UserMini />
         </div>
       </header>
-    </HydrationHeader>
+    </HydrationTasks>
   )
 }
 
