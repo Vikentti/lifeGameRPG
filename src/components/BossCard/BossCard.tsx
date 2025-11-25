@@ -11,6 +11,9 @@ import PopUpBossKill from "../PopUpBossKill/PopUpBossKill";
 import {
   CompletePopUpContext
 } from "../../hookes/CompletePopUpContext/CompletePopUpContext";
+import {
+  useCompletePopUp
+} from "../../hookes/CompletePopUpContext/useCompletePopUp";
 
 interface BossCardProps {
   className?: string
@@ -43,21 +46,14 @@ const BossCard = ({
 
   const [isOpen, setIsOpen] = useState(false)
 
-  const {
-    setPopUpTitle,
-    setXpGained,
-    setCharacteristic,
-    setActivePopUp} = useContext(CompletePopUpContext)
+  const {setCompletePopUp} = useCompletePopUp()
 
 
   const handleKill = () => {
     if (canKill) {
       dispatch(addStat({stat: boss.stat, howMuch: 10}))
       dispatch(addXp(boss.xp))
-      setCharacteristic(boss.stat)
-      setXpGained(boss.xp)
-      setPopUpTitle('Boss')
-      setActivePopUp(true)
+      setCompletePopUp(boss.stat, boss.xp)
       dispatch(removeBoss(boss.id))
     } else {
       setIsOpen(true)
