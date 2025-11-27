@@ -4,7 +4,7 @@ import HpBar from "../HpBar/HpBar";
 import Button from "../Button/Button";
 import {useDispatch} from "react-redux";
 import type {AppDispatch} from "../../states/store";
-import {addStat, addXp} from "../../states/User/userSlice";
+import {addStat, addXp, onBossKill} from "../../states/User/userSlice";
 import {removeBoss} from "../../states/boss/bossSlice";
 import {Link} from "react-router";
 import PopUpBossKill from "../PopUpBossKill/PopUpBossKill";
@@ -51,8 +51,7 @@ const BossCard = ({
 
   const handleKill = () => {
     if (canKill) {
-      dispatch(addStat({stat: boss.stat, howMuch: 10}))
-      dispatch(addXp(boss.xp))
+      dispatch(onBossKill({stat: boss.stat, howMuch: 10, xp: boss.xp}))
       setCompletePopUp(boss.stat, boss.xp)
       dispatch(removeBoss(boss.id))
     } else {

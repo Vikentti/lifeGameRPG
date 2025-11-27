@@ -19,15 +19,19 @@ import CompletePopUp from "../../../src/components/CompletePopUp/CompletePopUp";
 import {
   CompletePopUpContext
 } from "../../../src/hookes/CompletePopUpContext/CompletePopUpContext";
+import {useEnemies} from "../../../src/hookes/useEnemies";
 
 
 const TasksDetails = () => {
 
   const {taskId} = useParams()
   const navigate = useNavigate()
-  const tasks = useSelector((state: RootState) => state.bosses?.bosses ?? [])
-  const miniBoss = useSelector((state: RootState) => state.miniBosses?.miniBosses ?? [])
-  const mobs = useSelector((state: RootState) => state.mobs?.mobs ?? [])
+
+  const {bosses, miniBosses, mobs} = useEnemies()
+
+  // const bosses = useSelector((state: RootState) => state.bosses?.bosses ?? [])
+  // const miniBoss = useSelector((state: RootState) => state.miniBosses?.miniBosses ?? [])
+  // const mobs = useSelector((state: RootState) => state.mobs?.mobs ?? [])
   const dispatch: AppDispatch = useDispatch()
   const [textValue, setTextValue] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
@@ -54,8 +58,8 @@ const TasksDetails = () => {
   }
 
   const task = useMemo(() => {
-    return tasks.find(t => t.id === taskId)
-  }, [tasks, taskId])
+    return bosses.bosses.find(t => t.id === taskId)
+  }, [bosses.bosses, taskId])
 
 
   const handlerChange = (e: any) => {
@@ -88,12 +92,12 @@ const TasksDetails = () => {
   }
 
   const mobsArr = useMemo(() =>
-      mobs?.filter((i) => i.bossId === taskId) ?? [],
-    [mobs, taskId]
+      mobs?.mobs.filter((i) => i.bossId === taskId) ?? [],
+    [mobs.mobs, taskId]
   )
   const miniBossArr = useMemo(() =>
-      miniBoss?.filter((i) => i.bossId === taskId) ?? [],
-    [miniBoss, taskId]
+      miniBosses?.miniBosses.filter((i) => i.bossId === taskId) ?? [],
+    [miniBosses.miniBosses, taskId]
   )
 
 

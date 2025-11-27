@@ -18,7 +18,6 @@ const defaultUser: User = {
 };
 
 
-
 interface UserState {
   user: User
 }
@@ -61,7 +60,6 @@ const userSlice = createSlice({
         state.user.xp -= requaredXp
       }
 
-      localStorage.setItem('user', JSON.stringify(state.user))
     },
     resetUser: (state, action: PayloadAction<number>) => {
       state.user = {
@@ -70,7 +68,6 @@ const userSlice = createSlice({
         lvl: action.payload
       };
 
-      localStorage.setItem('user', JSON.stringify(state.user))
     },
     addStat: (state, action: PayloadAction<{
       stat: string;
@@ -80,13 +77,31 @@ const userSlice = createSlice({
 
       if (stat in state.user && typeof state.user[stat as keyof User] === 'number') {
         (state.user[stat as keyof User] as number) += howMuch;
-        localStorage.setItem('user', JSON.stringify(state.user));
       }
     },
     setUserName: (state, action: PayloadAction<string>) => {
       state.user.name = action.payload
 
-      localStorage.setItem('user', JSON.stringify(state.user))
+    },
+    onBossKill: (state, action: PayloadAction<{
+      stat: string,
+      howMuch: number,
+      xp: number
+    }>) => {
+
+      const {stat, howMuch, xp} = action.payload
+
+      state.user.xp += howMuch
+      const requaredXp = (state.user.lvl + 1) * 100
+      if (state.user.xp >= requaredXp) {
+        state.user.lvl += 1
+        state.user.xp -= requaredXp
+      }
+
+      if (stat in state.user && typeof state.user[stat as keyof User] === 'number') {
+        (state.user[stat as keyof User] as number) += howMuch;
+      }
+
     }
   }
 })
@@ -96,6 +111,7 @@ export const {
   resetUser,
   addStat,
   setUserName,
+  onBossKill,
 } = userSlice.actions
 
 export default userSlice.reducer

@@ -5,6 +5,7 @@ import Welcome from "../Welcome/Welcome";
 import TimeWasted from "../TimeWasted/TimeWasted";
 import {useSelector} from "react-redux";
 import type {RootState} from "../../states/store";
+import {useEnemies} from "../../hookes/useEnemies";
 
 interface CompleteStatsProps {
   className?: string
@@ -12,9 +13,7 @@ interface CompleteStatsProps {
 
 const CompleteStats = ({className}: CompleteStatsProps) => {
 
-  const bosses = useSelector((state: RootState) => state.bosses)
-  const miniBosses = useSelector((state: RootState) => state.miniBosses)
-  const mobs = useSelector((state: RootState) => state.mobs)
+  const {bosses, miniBosses, mobs} = useEnemies()
 
   const bossesCompleted = Object.keys(bosses.totalBosses).length - bosses.bosses.length
 

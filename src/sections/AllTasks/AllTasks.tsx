@@ -11,12 +11,13 @@ import CompletePopUp from "../../components/CompletePopUp/CompletePopUp";
 import {
   CompletePopUpContext
 } from "../../hookes/CompletePopUpContext/CompletePopUpContext";
+import {useBosses, useEnemies} from "../../hookes/useEnemies";
 
 
 function AllTasks() {
 
 
-  const bosses = useSelector((state: RootState) => state.bosses.bosses)
+  const bosses = useBosses()
   const dispatch: AppDispatch = useDispatch()
   const [textValue, setTextValue] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
@@ -70,7 +71,7 @@ function AllTasks() {
           title="Delete all "
         />
         <TasksList
-          arrayToMap={[...bosses]}
+          arrayToMap={[...bosses.bosses]}
           isBoss
           isColumns
         />

@@ -40,14 +40,12 @@ const loadFromLocalStorage = (): bossState => {
 
 const initialState: bossState = loadFromLocalStorage()
 
-
 const bossesSlice = createSlice({
   name: "bosses",
   initialState,
   reducers: {
     addBoss: (state, action: PayloadAction<Omit<Boss, 'id' | 'xp' | 'hp' | 'maxHp' | 'stat'>>) => {
       const baseHp = Math.floor(Math.random() * (300 - 200) + 200)
-
       const stat = checkTask(action.payload.title)
 
       const newBoss = {
@@ -62,19 +60,13 @@ const bossesSlice = createSlice({
       state.bosses.push(newBoss)
       state.totalBosses[newBoss.id] =
         (state.totalBosses[newBoss.id] || 0) + 1
-      localStorage.setItem('bosses', JSON.stringify(state))
     },
-
     removeBoss: (state, action: PayloadAction<string>) => {
       state.bosses = state.bosses.filter((item) => item.id !== action.payload)
-      localStorage.setItem('bosses', JSON.stringify(state.bosses))
     },
-
     removeAllBosses: (state) => {
       state.bosses = []
-      localStorage.setItem('bosses', JSON.stringify(state.bosses))
     },
-
     damageBoss: (state, action: PayloadAction<{
       id: string,
       damage: number
@@ -87,7 +79,6 @@ const bossesSlice = createSlice({
           targetBoss.hp = targetBoss.hp - action.payload.damage
         }
       }
-      localStorage.setItem('bosses', JSON.stringify(state.bosses))
     },
     addHp: (state, action: PayloadAction<{ id: string, upHp: number }>) => {
       const targetBoss = state.bosses.find((item) => item.id === action.payload.id)
@@ -96,8 +87,6 @@ const bossesSlice = createSlice({
         targetBoss.maxHp -= action.payload.upHp
         targetBoss.hp -= action.payload.upHp
       }
-
-      localStorage.setItem('bosses', JSON.stringify(state.bosses))
     },
   },
   extraReducers: (builder) => {
@@ -112,7 +101,6 @@ const bossesSlice = createSlice({
           targetBoss.hp += action.payload.hp
           targetBoss.maxHp += action.payload.hp
         }
-        localStorage.setItem('bosses', JSON.stringify(state.bosses))
       })
       .addCase(addMiniBoss, (state, action: PayloadAction<{
         bossId: string,

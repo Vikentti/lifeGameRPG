@@ -54,14 +54,11 @@ const mobsSlice = createSlice({
         id: nanoid(),
         xp: 10,
         maxHp: action.payload.hp,
-
       }
       state.mobs.push(newMob)
-
-
       state.totalMobs[action.payload.bossId] =
         (state.totalMobs[action.payload.bossId] || 0) + 1
-      localStorage.setItem("mobs", JSON.stringify(state))
+
     },
     removeMob: (state, action: PayloadAction<{
       id: string,
@@ -74,8 +71,6 @@ const mobsSlice = createSlice({
         state.totalMobs[action.payload.bossId] =
           (state.totalMobs[action.payload.bossId] || 0) - 1
       }
-
-      localStorage.setItem("mobs", JSON.stringify(state))
     }
   }
 
