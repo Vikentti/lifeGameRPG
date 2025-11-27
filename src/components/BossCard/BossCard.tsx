@@ -1,19 +1,19 @@
 import './BossCard.scss'
-import React, {useContext, useState} from "react";
-import HpBar from "../HpBar/HpBar";
-import Button from "../Button/Button";
+
+import React, {useState} from "react";
 import {useDispatch} from "react-redux";
-import type {AppDispatch} from "../../states/store";
-import {addStat, addXp, onBossKill} from "../../states/User/userSlice";
-import {removeBoss} from "../../states/boss/bossSlice";
 import {Link} from "react-router";
-import PopUpBossKill from "../PopUpBossKill/PopUpBossKill";
-import {
-  CompletePopUpContext
-} from "../../hookes/CompletePopUpContext/CompletePopUpContext";
+
 import {
   useCompletePopUp
 } from "../../hookes/CompletePopUpContext/useCompletePopUp";
+import {removeBoss} from "../../states/boss/bossSlice";
+import type {AppDispatch} from "../../states/store";
+import {onKill} from "../../states/User/userSlice";
+import type {Boss} from "../../types/bossTypes";
+import Button from "../Button/Button";
+import HpBar from "../HpBar/HpBar";
+import PopUpBossKill from "../PopUpBossKill/PopUpBossKill";
 
 interface BossCardProps {
   className?: string
@@ -25,7 +25,7 @@ interface BossCardProps {
   maxHp: number
   leftMobs: number
   totalMobs: number
-  boss: any
+  boss: Boss
 }
 
 const BossCard = ({
@@ -51,7 +51,7 @@ const BossCard = ({
 
   const handleKill = () => {
     if (canKill) {
-      dispatch(onBossKill({stat: boss.stat, howMuch: 10, xp: boss.xp}))
+      dispatch(onKill({stat: boss.stat, howMuch: 10, xp: boss.xp}))
       setCompletePopUp(boss.stat, boss.xp)
       dispatch(removeBoss(boss.id))
     } else {
@@ -73,6 +73,7 @@ const BossCard = ({
           width="80"
           height="80"
           loading="lazy"
+          alt={title}
         />
         <h1 className="boss-card__title"> {title}</h1>
       </div>
@@ -130,7 +131,10 @@ const BossCard = ({
         )}
 
       </div>
-      <PopUpBossKill isOpen={isOpen} toggle={handelOpen} />
+      <PopUpBossKill
+        isOpen={isOpen}
+        toggle={handelOpen}
+      />
     </div>
   )
 }

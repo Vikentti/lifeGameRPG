@@ -1,3 +1,7 @@
+import '@/styles'
+
+import React, {useEffect, useState} from "react"
+import {Provider} from "react-redux"
 import {
   isRouteErrorResponse,
   Links,
@@ -6,20 +10,18 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router"
-import type {Route} from "./+types/root"
-import '@/styles'
-import React, {useEffect, useState} from "react"
-import {Provider} from "react-redux"
+import {PersistGate} from 'redux-persist/integration/react'
+
+import {
+  CompletePopUpContext
+} from "../src/hookes/CompletePopUpContext/CompletePopUpContext"
+import Content from "../src/layouts/Content/Content"
+import Header from "../src/layouts/Header/Header"
 import {
   createClientStore,
   createServerStore,
 } from "../src/states/store"
-import Header from "../src/layouts/Header/Header"
-import Content from "../src/layouts/Content/Content"
-import {
-  CompletePopUpContext
-} from "../src/hookes/CompletePopUpContext/CompletePopUpContext"
-import {PersistGate} from 'redux-persist/integration/react'
+import type {Route} from "./+types/root"
 
 const isClient = typeof window !== 'undefined'
 

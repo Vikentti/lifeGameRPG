@@ -1,6 +1,7 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import type {mob} from "../../types/bossTypes";
 import {nanoid} from "nanoid";
+
+import type {mob} from "../../types/bossTypes";
 import type {RootState} from "../store";
 import checkTask from "./StatsArr/Statistic";
 
@@ -48,7 +49,6 @@ const mobsSlice = createSlice({
       hp: number,
       stat: string
     }>) => {
-      const stat = checkTask(action.payload.title)
       const newMob = {
         ...action.payload,
         id: nanoid(),

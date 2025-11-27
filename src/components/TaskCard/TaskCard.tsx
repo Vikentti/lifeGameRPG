@@ -1,17 +1,20 @@
 import './TaskCard.scss'
+
 import classNames from 'classnames'
 import React, {useContext, useState} from "react";
-import Button from "../Button/Button";
-import {addHp, damageBoss, removeBoss} from "../../states/boss/bossSlice";
-import {removeMiniBoss} from "../../states/boss/miniBossSlice";
-import {removeMob} from "../../states/boss/mobsSlice";
 import {useDispatch, useSelector} from "react-redux";
-import type {AppDispatch, RootState} from "../../states/store";
-import HpBar from "../HpBar/HpBar";
-import {addStat, addXp} from "../../states/User/userSlice";
+
 import {
   CompletePopUpContext
 } from "../../hookes/CompletePopUpContext/CompletePopUpContext";
+import {useEnemies} from "../../hookes/useEnemies";
+import {addHp, damageBoss, removeBoss} from "../../states/boss/bossSlice";
+import {removeMiniBoss} from "../../states/boss/miniBossSlice";
+import {removeMob} from "../../states/boss/mobsSlice";
+import type {AppDispatch, RootState} from "../../states/store";
+import {addStat, addXp, onKill} from "../../states/User/userSlice";
+import Button from "../Button/Button";
+import HpBar from "../HpBar/HpBar";
 
 interface TaskCardProps {
   className?: string
@@ -48,69 +51,56 @@ const TaskCard: React.FC<TaskCardProps> = ({
 
   const dispatch: AppDispatch = useDispatch()
 
-  const mobs = useSelector((state: RootState) => state.mobs.mobs)
-  const miniBosses = useSelector((state: RootState) => state.miniBosses.miniBosses)
+  const {mobs, miniBosses} = useEnemies()
+
 
   const currentStatNumber = isBoss ? 10 : isMiniBoss ? 4 : 1
 
   const isStat = stat !== undefined && stat !== "undefined";
 
-
   const handlePopUpChange = (item: any) => {
-
     const Characteristic = item.stat !== 'undefined' ? item.stat : ''
-
     setXpGained(item.xp)
     setCharacteristic(Characteristic)
     setActivePopUp(true)
   }
 
   const handlerDelete = (id: string) => {
-    if (isMiniBoss) {
-      const miniBoss = [...miniBosses].find((item) => item.id === id)
-      if (miniBoss) {
-        dispatch(damageBoss({id: miniBoss.bossId, damage: miniBoss.hp}))
-        dispatch(addStat({stat: miniBoss.stat, howMuch: 4}))
-        dispatch(addXp(miniBoss.xp))
-        setPopUpTitle("Mini Boss")
-        handlePopUpChange(miniBoss)
-        dispatch(removeMiniBoss({id: id}))
-      }
+    const target = isMiniBoss
+      ? [...miniBosses.miniBosses].find((item) => item.id === id)
+      : [...mobs.mobs].find((item) => item.id === id)
 
-    } else {
-      const mob = [...mobs].find((item) => item.id === id)
-      if (mob) {
-        dispatch(damageBoss({id: mob.bossId, damage: mob.hp}))
-        dispatch(addStat({stat: mob.stat, howMuch: 1}))
-        dispatch(addXp(mob.xp))
-        setPopUpTitle("Mob")
-        handlePopUpChange(mob)
-        dispatch(removeMob({id: id}))
-      }
+    if (!target) {
+      return
     }
+
+    const data = isMiniBoss
+      ? {popUpTitle: "Mini Boss", remove: removeMiniBoss, howMuch: 4}
+      : {popUpTitle: "Mob", remove: removeMob, howMuch: 1}
+
+    dispatch(damageBoss({id: target.bossId, damage: target.hp}))
+    dispatch(onKill({stat: target.stat, howMuch: 4, xp: target.xp}))
+    setPopUpTitle(data.popUpTitle)
+    handlePopUpChange(target)
+    dispatch(data.remove({id}))
   }
 
   const handlerSimpleDelete = (id: string) => {
     if (isBoss) {
       dispatch(removeBoss(id))
-    }
-    if (isMiniBoss) {
-      const miniBoss = [...miniBosses].find((item) => item.id === id)
-      if (miniBoss) {
-        dispatch(addHp({id: miniBoss.bossId, upHp: miniBoss.hp}))
-        dispatch(removeMiniBoss({
-          id: id,
-          noComplete: true,
-          bossId: miniBoss.bossId
-        }))
-      }
 
     } else {
-      const mob = [...mobs].find((item) => item.id === id)
-      if (mob) {
-        dispatch(addHp({id: mob.bossId, upHp: mob.hp}))
-        dispatch(removeMob({id: id, noComplete: true, bossId: mob.bossId}))
-      }
+      const target = isMiniBoss
+        ? miniBosses.miniBosses.find(item => item.id === id)
+        : mobs.mobs.find(item => item.id === id);
+
+      if (!target) {return}
+
+      dispatch(addHp({id: target.bossId, upHp: target.hp}))
+
+      const targetDelete = isMiniBoss ? removeMiniBoss : removeMob
+
+      dispatch(targetDelete({id: id, noComplete: true, bossId: target.bossId}))
     }
   }
 

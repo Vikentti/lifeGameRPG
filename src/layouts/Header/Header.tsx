@@ -1,11 +1,12 @@
 import './Header.scss'
-import classNames from 'classnames'
-import BurgerButton from "../../components/BurgerButton/BurgerButton";
-import {Link, useLocation} from "react-router";
-import {useEffect, useRef, useState} from "react";
-import UserMini from "../../components/UserMini/UserMini";
 
+import classNames from 'classnames'
+import {useEffect, useRef, useState} from "react";
+import {Link, useLocation} from "react-router";
+
+import BurgerButton from "../../components/BurgerButton/BurgerButton";
 import HydrationTasks from "../../components/HydrationTasks/HydrationTasks";
+import UserMini from "../../components/UserMini/UserMini";
 
 
 interface linkInter {
@@ -39,7 +40,7 @@ const Header = () => {
     },
     {
       title: 'Daily Quest',
-      link: '/daily',
+      link: '/dailyQuests',
     },
     {
       title: 'Settings',
@@ -63,9 +64,6 @@ const Header = () => {
     }
   }, [isMenuOpen]);
 
-  const handleClick = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
 
 
   useEffect(() => {

@@ -1,5 +1,6 @@
-import type {User} from "../../types/useTypes"
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
+
+import type {User} from "../../types/useTypes"
 
 const defaultUser: User = {
   xp: 0,
@@ -83,7 +84,7 @@ const userSlice = createSlice({
       state.user.name = action.payload
 
     },
-    onBossKill: (state, action: PayloadAction<{
+    onKill: (state, action: PayloadAction<{
       stat: string,
       howMuch: number,
       xp: number
@@ -91,7 +92,7 @@ const userSlice = createSlice({
 
       const {stat, howMuch, xp} = action.payload
 
-      state.user.xp += howMuch
+      state.user.xp += xp
       const requaredXp = (state.user.lvl + 1) * 100
       if (state.user.xp >= requaredXp) {
         state.user.lvl += 1
@@ -111,7 +112,7 @@ export const {
   resetUser,
   addStat,
   setUserName,
-  onBossKill,
+  onKill,
 } = userSlice.actions
 
 export default userSlice.reducer

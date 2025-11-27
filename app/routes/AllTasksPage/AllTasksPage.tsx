@@ -1,6 +1,7 @@
 import './AllTasksPage.scss'
-import type {Route} from "../+types/home";
+
 import AllTasks from "../../../src/sections/AllTasks/AllTasks";
+import type {Route} from "../+types/home";
 
 
 export function meta({}: Route.MetaArgs) {

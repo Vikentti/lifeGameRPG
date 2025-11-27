@@ -1,6 +1,8 @@
 import './Button.scss'
+
 import classNames from 'classnames'
-import {type ButtonHTMLAttributes, forwardRef} from "react";
+import React from 'react';
+import {forwardRef} from "react";
 
 type ButtonType = "button" | "submit" | "reset"
 
@@ -8,7 +10,7 @@ interface ButtonProps {
   className?: string
   title?: string
   onClick?: () => void
-  type: ButtonType
+  type?: ButtonType
   ref?: null
   mod?: string
 }
@@ -16,14 +18,12 @@ interface ButtonProps {
 
 const Button =
   forwardRef<HTMLButtonElement, ButtonProps>
-  ((props: ButtonProps, ref) => {
+  ((props, ref) => {
     const {
       className,
       title,
       onClick,
       type = "button",
-
-      //  "wide" & default ""
       mod
     } = props
 
@@ -40,5 +40,7 @@ const Button =
       </button>
     )
   })
+
+Button.displayName = 'Button'
 
 export default Button

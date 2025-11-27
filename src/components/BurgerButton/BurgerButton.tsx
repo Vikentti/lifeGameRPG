@@ -1,5 +1,7 @@
 import './BurgerButton.scss'
+
 import classNames from 'classnames'
+import React from 'react';
 import {forwardRef} from "react";
 
 interface BurgerButtonProps {

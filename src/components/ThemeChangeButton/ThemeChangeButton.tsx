@@ -1,6 +1,7 @@
 import './ThemeChangeButton.scss';
+
 import classNames from 'classnames';
-import React, {useState, useEffect, useRef, useMemo} from "react";
+import React, {useEffect, useMemo,useState} from "react";
 
 interface ThemeChangeButtonProps {
   className?: string;

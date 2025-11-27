@@ -1,25 +1,27 @@
 import './TasksDetails.scss'
-import {useNavigate, useParams} from "react-router";
-import {useDispatch, useSelector} from "react-redux";
-import {useContext, useEffect, useMemo, useRef, useState} from "react";
-import type {AppDispatch, RootState} from "../../../src/states/store";
-import Button from "../../../src/components/Button/Button";
-import TasksList from "../../../src/components/TasksList/TasksList";
-import Field from "../../../src/components/Field/Field";
-import {addMob, selectedTotalMobs} from "../../../src/states/boss/mobsSlice";
-import {
-  addMiniBoss,
-  selectedTotalMiniBoss
-} from "../../../src/states/boss/miniBossSlice";
+
 import classNames from "classnames";
+import {useContext, useEffect, useMemo, useRef, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate, useParams} from "react-router";
+
+import BossCard from "../../../src/components/BossCard/BossCard";
+import Button from "../../../src/components/Button/Button";
+import CompletePopUp from "../../../src/components/CompletePopUp/CompletePopUp";
+import Field from "../../../src/components/Field/Field";
 import HydrationTasks
   from "../../../src/components/HydrationTasks/HydrationTasks";
-import BossCard from "../../../src/components/BossCard/BossCard";
-import CompletePopUp from "../../../src/components/CompletePopUp/CompletePopUp";
+import TasksList from "../../../src/components/TasksList/TasksList";
 import {
   CompletePopUpContext
 } from "../../../src/hookes/CompletePopUpContext/CompletePopUpContext";
 import {useEnemies} from "../../../src/hookes/useEnemies";
+import {
+  addMiniBoss,
+  selectedTotalMiniBoss
+} from "../../../src/states/boss/miniBossSlice";
+import {addMob, selectedTotalMobs} from "../../../src/states/boss/mobsSlice";
+import type {AppDispatch, RootState} from "../../../src/states/store";
 
 
 const TasksDetails = () => {
@@ -29,9 +31,6 @@ const TasksDetails = () => {
 
   const {bosses, miniBosses, mobs} = useEnemies()
 
-  // const bosses = useSelector((state: RootState) => state.bosses?.bosses ?? [])
-  // const miniBoss = useSelector((state: RootState) => state.miniBosses?.miniBosses ?? [])
-  // const mobs = useSelector((state: RootState) => state.mobs?.mobs ?? [])
   const dispatch: AppDispatch = useDispatch()
   const [textValue, setTextValue] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
@@ -42,7 +41,7 @@ const TasksDetails = () => {
     popUpTitle,
     xpGained,
     characteristic,
-      } = useContext(CompletePopUpContext)
+  } = useContext(CompletePopUpContext)
 
 
   const label = `Add new ${activeType === 'mob' ? 'Mob' : 'Mini Boss'}`
@@ -70,21 +69,16 @@ const TasksDetails = () => {
     e.preventDefault()
     if (textValue.trim() !== '' && taskId) {
 
-      if (activeType === 'mob') {
-        dispatch(addMob({
-          title: textValue,
-          bossId: taskId,
-          hp: Math.floor(Math.random() * (50 - 20) + 20),
-          stat: task ? task.stat : ''
-        }))
-      } else {
-        dispatch(addMiniBoss({
-          title: textValue,
-          bossId: taskId,
-          hp: Math.floor(Math.random() * (100 - 50) + 50),
-          stat: task ? task.stat : ''
-        }))
-      }
+      const type = activeType === 'miniBoss'
+        ? {hp: Math.floor(Math.random() * (100 - 50) + 50), action: addMiniBoss}
+        : {hp: Math.floor(Math.random() * (50 - 20) + 20), action: addMob}
+
+      dispatch(type.action({
+        title: textValue,
+        bossId: taskId,
+        hp: type.hp,
+        stat: task ? task.stat : ''
+      }))
 
       setTextValue('')
       inputRef.current?.focus()

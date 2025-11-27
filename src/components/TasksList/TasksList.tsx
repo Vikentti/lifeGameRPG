@@ -1,7 +1,10 @@
 import './TasksList.scss'
+
 import classNames from 'classnames'
-import type {Boss, miniBoss, mob} from "../../types/bossTypes";
+import React from "react";
 import {Link} from "react-router";
+
+import type {Boss, miniBoss, mob} from "../../types/bossTypes";
 import TaskCard from "../TaskCard/TaskCard";
 
 

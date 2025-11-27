@@ -1,8 +1,9 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import type {Boss} from "../../types/bossTypes";
 import {nanoid} from 'nanoid'
-import {addMob} from "./mobsSlice";
+
+import type {Boss} from "../../types/bossTypes";
 import {addMiniBoss} from "./miniBossSlice";
+import {addMob} from "./mobsSlice";
 import checkTask from "./StatsArr/Statistic"
 
 interface bossState {

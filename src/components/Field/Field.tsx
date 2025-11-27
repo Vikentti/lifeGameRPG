@@ -1,11 +1,11 @@
 import './Field.scss'
-import classNames from 'classnames'
-import * as events from "node:events";
+
+import React from "react";
 
 interface fieldProps {
-  setText?: (e: any) => void,
+  setText?: (e: React.ChangeEvent<HTMLInputElement>) => void,
   textValue?: string,
-  inputRef?: any,
+  inputRef?: React.Ref<HTMLInputElement>,
   label?: string
 }
 

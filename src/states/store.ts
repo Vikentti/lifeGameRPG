@@ -1,15 +1,15 @@
-import {configureStore, combineReducers} from "@reduxjs/toolkit"
-import bossReducer from "./boss/bossSlice"
-import userReducer from './User/userSlice'
-import miniBossReducer from './boss/miniBossSlice'
-import mobsReducer from './boss/mobsSlice'
+import {combineReducers,configureStore} from "@reduxjs/toolkit"
 import {
-  persistStore,
   persistReducer,
+  persistStore,
 } from 'redux-persist'
 import createWebStorage from 'redux-persist/lib/storage/createWebStorage'
 
-// Create noop storage for server-side
+import bossReducer from "./boss/bossSlice"
+import miniBossReducer from './boss/miniBossSlice'
+import mobsReducer from './boss/mobsSlice'
+import userReducer from './User/userSlice'
+
 const createNoopStorage = () => {
   return {
     getItem(_key: any) {
@@ -36,8 +36,6 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
-  // Optional: add whitelist if you only want to persist certain reducers
-  // whitelist: ['user']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

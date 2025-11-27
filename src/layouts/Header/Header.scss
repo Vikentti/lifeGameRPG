@@ -44,25 +44,30 @@
   &__list {
     --list-width: 800px;
 
-    position: absolute;
+    position: fixed;
+    top: 83px;
+    left: 0;
     display: flex;
     flex-direction: column;
     align-items: end;
     row-gap: 45px;
-    top: calc(100% + 6.5px);
-    left: -25%;
     height: calc(100vh - 83px);
     width: var(--list-width);
     padding-top: 20px;
     padding-inline: 50px;
+    transform: translateX(-100%);
     transition-duration: var(--transition-duration);
-    translate: calc(var(--list-width) * -1);
     background-color: var(--color-bg-secondary);
     opacity: 0;
     visibility: hidden;
 
 
+
+
+
+
     &.is-active {
+      transform: translateX(0);
       visibility: visible;
       translate: 0;
       opacity: 1;

@@ -1,10 +1,12 @@
 import './Welcome.scss'
+
 import classNames from 'classnames'
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
+
 import type {RootState} from "../../states/store";
 import {setUserName} from "../../states/User/userSlice";
-import ThemeChangeButton from "../ThemeChangeButton/ThemeChangeButton";
+import type {User} from "../../types/useTypes";
 
 interface WelcomeProps {
   className?: string
@@ -45,7 +47,7 @@ const Welcome = ({className}: WelcomeProps) => {
     dispatch(setUserName("Vikentii Bocharov"))
   }, []);
 
-  const getStatsArr = (user : any)  => [
+  const getStatsArr = (user : User)  => [
     { title: 'str', number: `${user?.str || 0}` },
     { title: 'agi', number: `${user?.agi || 0}` },
     { title: 'luck', number: `${user?.luck || 0}` },

@@ -1,10 +1,8 @@
 import './CompleteStats.scss'
+
 import classNames from 'classnames'
 import React from "react";
-import Welcome from "../Welcome/Welcome";
-import TimeWasted from "../TimeWasted/TimeWasted";
-import {useSelector} from "react-redux";
-import type {RootState} from "../../states/store";
+
 import {useEnemies} from "../../hookes/useEnemies";
 
 interface CompleteStatsProps {
@@ -35,10 +33,13 @@ const CompleteStats = ({className}: CompleteStatsProps) => {
     <div
       className={classNames(className, 'complete-stats')}
     >
-      <h2 className="complete-stats__title">Completed task </h2>
+      <h2 className="complete-stats__title">Completed task</h2>
       <ul className="complete-stats__list">
         {completeArr.map(({title, completed}, index) => (
-          <li className="complete-stats__item" key={index}>
+          <li
+            className="complete-stats__item"
+            key={index}
+          >
             <div className="complete-stats__item-name">{title}</div>
             <div className="complete-stats__item-number">{completed}</div>
           </li>

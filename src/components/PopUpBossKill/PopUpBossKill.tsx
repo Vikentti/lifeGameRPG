@@ -1,8 +1,10 @@
 import './PopUpBossKill.scss'
+
 import classNames from 'classnames'
 import React, {useEffect, useRef} from "react";
-import Button from "../Button/Button";
 import {Link} from "react-router";
+
+import Button from "../Button/Button";
 
 interface PopUpBossKillProps {
   className?: string

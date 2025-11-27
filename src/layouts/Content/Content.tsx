@@ -1,5 +1,5 @@
 import './Content.scss'
-import classNames from 'classnames'
+
 import React from "react";
 
 function Content({children} : {children : React.ReactNode}) {

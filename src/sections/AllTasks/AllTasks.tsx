@@ -1,17 +1,19 @@
 import './AllTasks.scss'
-import TasksList from "../../components/TasksList/TasksList";
-import {useDispatch, useSelector} from "react-redux";
-import type {AppDispatch, RootState} from "../../states/store";
-import {addBoss, removeAllBosses} from "../../states/boss/bossSlice";
-import {useContext, useRef, useState} from "react";
-import HydrationTasks from "../../components/HydrationTasks/HydrationTasks";
-import Field from "../../components/Field/Field";
+
+import React, {useContext, useRef, useState} from "react";
+import {useDispatch,} from "react-redux";
+
 import Button from "../../components/Button/Button";
 import CompletePopUp from "../../components/CompletePopUp/CompletePopUp";
+import Field from "../../components/Field/Field";
+import HydrationTasks from "../../components/HydrationTasks/HydrationTasks";
+import TasksList from "../../components/TasksList/TasksList";
 import {
   CompletePopUpContext
 } from "../../hookes/CompletePopUpContext/CompletePopUpContext";
-import {useBosses, useEnemies} from "../../hookes/useEnemies";
+import {useBosses,} from "../../hookes/useEnemies";
+import {addBoss, removeAllBosses} from "../../states/boss/bossSlice";
+import type {AppDispatch,} from "../../states/store";
 
 
 function AllTasks() {
@@ -30,7 +32,7 @@ function AllTasks() {
   } = useContext(CompletePopUpContext)
 
 
-  const handlerSubmit = (e: any) => {
+  const handlerSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
     if (textValue.trim() !== '') {
@@ -40,7 +42,7 @@ function AllTasks() {
     }
   }
 
-  const handlerChange = (e: any) => {
+  const handlerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTextValue(e.target.value)
   }
 

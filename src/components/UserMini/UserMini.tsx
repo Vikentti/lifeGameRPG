@@ -1,11 +1,14 @@
 import './UserMini.scss'
+
 import classNames from 'classnames'
+import React from "react";
 import {useEffect, useRef, useState} from "react";
-import {Link} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
+import {Link} from "react-router";
+
 import type {AppDispatch, RootState} from "../../states/store";
-import Button from "../Button/Button";
 import {resetUser} from "../../states/User/userSlice";
+import Button from "../Button/Button";
 import ThemeChangeButton from "../ThemeChangeButton/ThemeChangeButton";
 
 interface userMiniProps {

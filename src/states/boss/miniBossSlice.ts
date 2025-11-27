@@ -1,6 +1,7 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import type {miniBoss} from "../../types/bossTypes";
 import {nanoid} from "nanoid";
+
+import type {miniBoss} from "../../types/bossTypes";
 import type {RootState} from "../store";
 import checkTask from "./StatsArr/Statistic";
 
@@ -49,7 +50,6 @@ const miniBossSlice = createSlice({
       hp: number,
       stat: string,
     }>) => {
-      const stat = checkTask(action.payload.title)
 
       const newMiniBoss = {
         ...action.payload,
