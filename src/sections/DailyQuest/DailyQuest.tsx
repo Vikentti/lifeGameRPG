@@ -2,10 +2,15 @@ import './DailyQuest.scss'
 
 import classNames from 'classnames'
 import React, {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 
-import DailyQuestPopUp from "../../components/DailyQuestPopUp/DailyQuestPopUp";
-import {DailyQuestTasks} from "./DailyQuestTasks";
 import Button from "../../components/Button/Button";
+import DailyQuestPopUp from "../../components/DailyQuestPopUp/DailyQuestPopUp";
+import type {Category} from "../../states/Daily/DailySlice";
+import {
+  toggleCategoryVisibility
+} from "../../states/Daily/DailySlice";
+import type {RootState} from "../../states/store";
 
 
 interface DailyQuestProps {
@@ -15,21 +20,58 @@ interface DailyQuestProps {
 const DailyQuest = ({className}: DailyQuestProps) => {
 
 
-  const [tasks, setTasks] = useState(DailyQuestTasks)
   const [activeTab, setActiveTab] = useState(0)
   const [activePopUp, setActivePopUp] = useState(false)
 
-  const handleToggleVisible = (index: number) => {
-    setTasks(prevTasks =>
-      prevTasks.map((item, i) =>
-        i === index
-          ? {...item, visible: !item.visible}
-          : item
-      )
-    );
+
+  const dispatch = useDispatch()
+  const daily = useSelector((state: RootState) => state.daily)
+
+
+  const categoriesForUI = [
+    {
+      title: "Strength",
+      tasks: daily.strength.daily,
+      visible: daily.strength.visible,
+      currentDay: daily.strength.currentDay,
+      categoryKey: 'strength' as Category
+    },
+    {
+      title: "Dexterity",
+      tasks: daily.dexterity.daily,
+      visible: daily.dexterity.visible,
+      currentDay: daily.dexterity.currentDay,
+      categoryKey: 'dexterity' as Category
+    },
+    {
+      title: "Intelligence",
+      tasks: daily.intelligence.daily,
+      visible: daily.intelligence.visible,
+      currentDay: daily.intelligence.currentDay,
+      categoryKey: 'intelligence' as Category
+    },
+    {
+      title: "Health",
+      tasks: daily.health.daily,
+      visible: daily.health.visible,
+      currentDay: daily.health.currentDay,
+      categoryKey: 'health' as Category
+    },
+    {
+      title: "Social Skills",
+      tasks: daily.social.daily,
+      visible: daily.social.visible,
+      currentDay: daily.social.currentDay,
+      categoryKey: 'social' as Category
+    }
+  ];
+
+  const filteredTasks = categoriesForUI.filter(cat => cat.visible);
+
+  const handleToggleVisible = (categoryKey: Category) => {
+    dispatch(toggleCategoryVisibility(categoryKey));
   };
 
-  const filteredTasks = tasks.filter((item) => item.visible === true)
 
   const activeCategory = filteredTasks[activeTab]
 
@@ -38,20 +80,21 @@ const DailyQuest = ({className}: DailyQuestProps) => {
   }
 
 
+
   return (
     <div
       className={classNames(className, 'daily-quest')}
     >
 
 
-        <div className="daily-quest__choose">
-          <h1 className="daily-quest__title">Your daily quests</h1>
-          <Button
-            type="button"
-            title="Choose"
-            onClick={togglePopUp}
-          />
-        </div>
+      <div className="daily-quest__choose">
+        <h1 className="daily-quest__title">Your daily quests</h1>
+        <Button
+          type="button"
+          title="Choose"
+          onClick={togglePopUp}
+        />
+      </div>
 
 
       <div className="daily-quest__body">
@@ -86,7 +129,7 @@ const DailyQuest = ({className}: DailyQuestProps) => {
 
       <DailyQuestPopUp
         onClick={handleToggleVisible}
-        tasks={tasks}
+        tasks={categoriesForUI}
         active={activePopUp}
         close={togglePopUp}
       />

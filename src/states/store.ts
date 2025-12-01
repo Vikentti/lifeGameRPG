@@ -8,6 +8,7 @@ import createWebStorage from 'redux-persist/lib/storage/createWebStorage'
 import bossReducer from "./boss/bossSlice"
 import miniBossReducer from './boss/miniBossSlice'
 import mobsReducer from './boss/mobsSlice'
+import dailyReducer from './Daily/DailySlice'
 import userReducer from './User/userSlice'
 
 const createNoopStorage = () => {
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   miniBosses: miniBossReducer,
   mobs: mobsReducer,
   user: userReducer,
+  daily: dailyReducer
 })
 
 const persistConfig = {
