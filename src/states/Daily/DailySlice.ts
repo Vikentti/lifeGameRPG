@@ -14,7 +14,7 @@ import {
   DailyQuestTasksDay8,
   DailyQuestTasksDay9,
   DailyQuestTasksDay10
-} from "../../sections/DailyQuest/DailyQuestTasks";
+} from "./DailyQuestTasks";
 import type {Daily} from "../../types/dailyTypes";
 
 interface CategoryProgress {
@@ -122,11 +122,9 @@ const convertQuestToDaily = (quest: any, day: number, category: string): Daily[]
     stat: task.stat,
     isDone: false,
     category: quest.title,
-    isUserCreated: false,
     createdAt: getCurrentDate()
   }));
 };
-
 
 
 const initializeCategory = (
@@ -184,13 +182,18 @@ const loadInitialState = (): DailyState => {
 
 const initialState: DailyState = loadInitialState();
 
-export type Category = 'strength' | 'dexterity' | 'intelligence' | 'health' | 'social'
+export type Category =
+  'strength'
+  | 'dexterity'
+  | 'intelligence'
+  | 'health'
+  | 'social'
 
 const dailySlice = createSlice({
   name: "daily",
   initialState,
   reducers: {
-    nextCategoryDay: (state, action : PayloadAction<Category>) => {
+    nextCategoryDay: (state, action: PayloadAction<Category>) => {
       const category = action.payload;
       const categoryState = state[category];
       const nextDay = categoryState.currentDay + 1;
@@ -215,24 +218,70 @@ const dailySlice = createSlice({
             break;
         }
 
-        // Сохраняем пользовательские задачи
-        const userTasks = categoryState.daily.filter(task => task.isUserCreated);
-        const systemTasks = convertQuestToDaily(quest, nextDay, category);
+        // const userTasks = categoryState.daily.filter(task => task.isUserCreated);
+        const Tasks = convertQuestToDaily(quest, nextDay, category);
 
         state[category] = {
           currentDay: nextDay,
-          daily: [...systemTasks, ...userTasks],
+          daily: [...Tasks],
           lastUpdate: getCurrentDate(),
-          visible: false
+          visible: state[category].visible
         };
+      }
+    },
+    resetCategoryDay: (state, action: PayloadAction<Category>) => {
+      const category = action.payload
+
+      let quest;
+      switch (category) {
+        case 'strength':
+          quest = getStrengthTasksByDay(1);
+          break;
+        case 'dexterity':
+          quest = getDexterityTasksByDay(1);
+          break;
+        case 'intelligence':
+          quest = getIntelligenceTasksByDay(1);
+          break;
+        case 'health':
+          quest = getHealthTasksByDay(1);
+          break;
+        case 'social':
+          quest = getSocialTasksByDay(1);
+          break;
+      }
+      const Tasks = convertQuestToDaily(quest, 1, category)
+
+      state[category] = {
+        currentDay: 1,
+        daily: [...Tasks],
+        lastUpdate: getCurrentDate(),
+        visible: state[category].visible
       }
     },
     toggleCategoryVisibility: (state, action: PayloadAction<Category>) => {
       const category = action.payload
       state[category].visible = !state[category].visible
+    },
+    setCategoryItemDone: (state, action: PayloadAction<{
+      category: Category,
+      taskId: string
+    }>) => {
+      const {category, taskId} = action.payload
+      const task = state[category].daily.find((item) => item.id === taskId)
+
+      if (task) {
+        task.isDone = !task.isDone
+      }
     }
+
   }
 })
 
-export const {nextCategoryDay, toggleCategoryVisibility} = dailySlice.actions
+export const {
+  nextCategoryDay,
+  resetCategoryDay,
+  toggleCategoryVisibility,
+  setCategoryItemDone
+} = dailySlice.actions
 export default dailySlice.reducer

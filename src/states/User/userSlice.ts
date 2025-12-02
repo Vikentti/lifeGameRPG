@@ -7,7 +7,7 @@ const defaultUser: User = {
   name: "User",
   lvl: 0,
   str: 0,
-  agi: 0,
+  dex: 0,
   luck: 0,
   int: 0,
   will: 0,

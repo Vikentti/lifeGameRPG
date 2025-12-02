@@ -49,14 +49,14 @@ const Welcome = ({className}: WelcomeProps) => {
 
   const getStatsArr = (user : User)  => [
     { title: 'str', number: `${user?.str || 0}` },
-    { title: 'agi', number: `${user?.agi || 0}` },
+    { title: 'dex', number: `${user?.dex || 0}` },
     { title: 'luck', number: `${user?.luck || 0}` },
     { title: 'int', number: `${user?.int || 0}` }
   ];
 
   const statsArr = getStatsArr(user)
 
-
+  console.log(user?.dex)
 
   return (
     <div

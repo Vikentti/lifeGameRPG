@@ -3,7 +3,7 @@ export interface User {
   name: string,
   lvl: number,
   str: number,
-  agi: number,
+  dex: number,
   luck: number,
   int: number,
   will: number,

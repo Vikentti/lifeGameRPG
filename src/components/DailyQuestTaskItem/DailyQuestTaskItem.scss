@@ -1,0 +1,128 @@
+.daily-quest-task-item {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-width: 500px;
+  padding: 5px;
+  font-size: 25px;
+  border-bottom: var(--border-black);
+
+  &__label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  &__title {
+    margin-left: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  &--checked &__title {
+    text-decoration: line-through;
+    color: var(--color-bg-tertiary);
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--color-bg-tertiary);
+      transform: scaleX(1);
+      transition: transform 0.3s ease;
+    }
+  }
+
+  // Остальные стили остаются без изменений...
+  &__checkbox-wrapper {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  &__checkbox-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+
+    &:checked {
+      & + .daily-quest-task-item__check-visual {
+        border-color: var(--color-bg-secondary);
+        background: var(--color-bg-secondary);
+        animation: check-pulse 0.6s ease;
+
+        &::before {
+          transform: scale(2.2);
+          opacity: 0;
+          transition: all 0.6s ease;
+        }
+
+        .daily-quest-task-item__check-icon {
+          stroke-dashoffset: 0;
+        }
+      }
+    }
+  }
+
+  &__check-visual {
+    position: relative;
+    display: block;
+    width: 24px;
+    height: 24px;
+    border-radius: 20%;
+    border: var(--border-black);
+    background-color: var(--color-bg-secondary);
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--color-bg-secondary);
+      display: block;
+      transform: scale(0);
+      opacity: 1;
+      border-radius: 50%;
+      transition-delay: 0.2s;
+    }
+
+    &:hover {
+      border-color: var(--color-bg-secondary);
+    }
+  }
+
+  &__check-icon {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    fill: none;
+    stroke: white;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 16px;
+    stroke-dashoffset: 16px;
+    transition: all 0.3s ease;
+    transition-delay: 0.1s;
+  }
+
+  @keyframes check-pulse {
+    50% {
+      transform: scale(1.1);
+    }
+  }
+}

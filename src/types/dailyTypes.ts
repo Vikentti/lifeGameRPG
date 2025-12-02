@@ -4,5 +4,4 @@ export interface Daily {
   stat: string
   category: string
   isDone: boolean
-  isUserCreated?: boolean
 }

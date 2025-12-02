@@ -129,11 +129,11 @@ export const DailyQuestTasksDay3 = [
   {
     title: "Dexterity",
     tasks: [
-      { title: '14 minutes of stretching', stat: 'dex' },
-      { title: 'Walk 120 meters on tiptoes', stat: 'dex' },
-      { title: 'Juggling for 7 minutes', stat: 'dex' },
-      { title: 'Balance: stand on one leg for 40 seconds', stat: 'dex' },
-      { title: 'Type text for 1 minute 30 seconds at speed', stat: 'dex' }
+      { title: '14 minutes of stretching', stat: 'ai' },
+      { title: 'Walk 120 meters on tiptoes', stat: 'ai' },
+      { title: 'Juggling for 7 minutes', stat: 'ai' },
+      { title: 'Balance: stand on one leg for 40 seconds', stat: 'ai' },
+      { title: 'Type text for 1 minute 30 seconds at speed', stat: 'ai' }
     ],
     visible: false
   },

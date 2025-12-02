@@ -6,11 +6,15 @@ import {useDispatch, useSelector} from "react-redux";
 
 import Button from "../../components/Button/Button";
 import DailyQuestPopUp from "../../components/DailyQuestPopUp/DailyQuestPopUp";
-import type {Category} from "../../states/Daily/DailySlice";
+import {
+  type Category, setCategoryItemDone,
+} from "../../states/Daily/DailySlice";
 import {
   toggleCategoryVisibility
 } from "../../states/Daily/DailySlice";
 import type {RootState} from "../../states/store";
+import DailyQuestTaskItem
+  from "../../components/DailyQuestTaskItem/DailyQuestTaskItem";
 
 
 interface DailyQuestProps {
@@ -75,10 +79,14 @@ const DailyQuest = ({className}: DailyQuestProps) => {
 
   const activeCategory = filteredTasks[activeTab]
 
+
   const togglePopUp = () => {
     setActivePopUp(!activePopUp)
   }
 
+  const setDailyDone = (category: Category, id: string) => {
+    dispatch(setCategoryItemDone({category: category, taskId: id}))
+  }
 
 
   return (
@@ -112,13 +120,19 @@ const DailyQuest = ({className}: DailyQuestProps) => {
         <div className="daily-quest__content">
           {activeCategory && (
             <>
-              <h3 className="daily-quest__content-title">{activeCategory.title}</h3>
               <ul className="daily-quest__content-list">
                 {activeCategory.tasks.map((task, taskIndex) => (
                   <li
                     className="daily-quest__content-item"
                     key={taskIndex}
-                  >{task.title}</li>
+                  ><DailyQuestTaskItem
+                    title={task.title}
+                    isDone={task.isDone}
+                    setDone={setDailyDone}
+                    category={activeCategory.categoryKey}
+                    id={task.id}
+                    stat={task.stat}
+                  /></li>
                 ))}
               </ul>
             </>
