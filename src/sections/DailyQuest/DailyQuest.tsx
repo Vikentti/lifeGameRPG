@@ -1,13 +1,16 @@
 import './DailyQuest.scss'
 
 import classNames from 'classnames'
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 
 import Button from "../../components/Button/Button";
 import DailyQuestPopUp from "../../components/DailyQuestPopUp/DailyQuestPopUp";
 import {
-  type Category, setCategoryItemDone,
+  type Category,
+  completeCategoryReward,
+  forceResetDailyAll,
+  setCategoryItemDone,
 } from "../../states/Daily/DailySlice";
 import {
   toggleCategoryVisibility
@@ -15,6 +18,10 @@ import {
 import type {RootState} from "../../states/store";
 import DailyQuestTaskItem
   from "../../components/DailyQuestTaskItem/DailyQuestTaskItem";
+import {onKill} from "../../states/User/userSlice";
+import {
+  useCompletePopUp
+} from "../../hookes/CompletePopUpContext/useCompletePopUp";
 
 
 interface DailyQuestProps {
@@ -25,8 +32,9 @@ const DailyQuest = ({className}: DailyQuestProps) => {
 
 
   const [activeTab, setActiveTab] = useState(0)
-  const [activePopUp, setActivePopUp] = useState(false)
+  const [activeCategoryPopUp, setCategoryActivePopUp] = useState(false)
 
+  const {setCompletePopUp} = useCompletePopUp()
 
   const dispatch = useDispatch()
   const daily = useSelector((state: RootState) => state.daily)
@@ -35,57 +43,94 @@ const DailyQuest = ({className}: DailyQuestProps) => {
   const categoriesForUI = [
     {
       title: "Strength",
-      tasks: daily.strength.daily,
-      visible: daily.strength.visible,
-      currentDay: daily.strength.currentDay,
-      categoryKey: 'strength' as Category
+      tasks: daily.strength?.daily || [],
+      visible: daily.strength?.visible || false,
+      currentDay: daily.strength?.currentDay || 1,
+      categoryKey: 'strength' as Category,
+      rewardGiven: daily.strength?.rewardGiven || false
     },
     {
       title: "Dexterity",
-      tasks: daily.dexterity.daily,
-      visible: daily.dexterity.visible,
-      currentDay: daily.dexterity.currentDay,
-      categoryKey: 'dexterity' as Category
+      tasks: daily.dexterity?.daily || [],
+      visible: daily.dexterity?.visible || false,
+      currentDay: daily.dexterity?.currentDay || 1,
+      categoryKey: 'dexterity' as Category,
+      rewardGiven: daily.dexterity?.rewardGiven || false
     },
     {
       title: "Intelligence",
-      tasks: daily.intelligence.daily,
-      visible: daily.intelligence.visible,
-      currentDay: daily.intelligence.currentDay,
-      categoryKey: 'intelligence' as Category
+      tasks: daily.intelligence?.daily || [],
+      visible: daily.intelligence?.visible || false,
+      currentDay: daily.intelligence?.currentDay || 1,
+      categoryKey: 'intelligence' as Category,
+      rewardGiven: daily.intelligence?.rewardGiven || false
     },
     {
       title: "Health",
-      tasks: daily.health.daily,
-      visible: daily.health.visible,
-      currentDay: daily.health.currentDay,
-      categoryKey: 'health' as Category
+      tasks: daily.health?.daily || [],
+      visible: daily.health?.visible || false,
+      currentDay: daily.health?.currentDay || 1,
+      categoryKey: 'health' as Category,
+      rewardGiven: daily.health?.rewardGiven || false
     },
     {
       title: "Social Skills",
-      tasks: daily.social.daily,
-      visible: daily.social.visible,
-      currentDay: daily.social.currentDay,
-      categoryKey: 'social' as Category
+      tasks: daily.social?.daily || [],
+      visible: daily.social?.visible || false,
+      currentDay: daily.social?.currentDay || 1,
+      categoryKey: 'social' as Category,
+      rewardGiven: daily.social?.rewardGiven || false
     }
   ];
-
   const filteredTasks = categoriesForUI.filter(cat => cat.visible);
+
+  useEffect(() => {
+    if (filteredTasks.length > 0 && activeTab >= filteredTasks.length) {
+      setActiveTab(0)
+    }
+
+  }, [filteredTasks.length, activeTab])
+
+  const activeCategory = filteredTasks[activeTab]
 
   const handleToggleVisible = (categoryKey: Category) => {
     dispatch(toggleCategoryVisibility(categoryKey));
   };
 
 
-  const activeCategory = filteredTasks[activeTab]
-
 
   const togglePopUp = () => {
-    setActivePopUp(!activePopUp)
+    setCategoryActivePopUp(!activeCategoryPopUp)
   }
 
   const setDailyDone = (category: Category, id: string) => {
     dispatch(setCategoryItemDone({category: category, taskId: id}))
+  }
+
+
+  useEffect(() => {
+    if (activeCategory &&
+      activeCategory.tasks.every(item => item.isDone) &&
+      !activeCategory.rewardGiven) {
+
+      const uniqueStats = [...new Set(
+        activeCategory.tasks
+          .filter(item => item.stat)
+          .map(item => item.stat)
+      )];
+
+      if (uniqueStats.length > 0) {
+        dispatch(onKill({stat: uniqueStats.toString(), howMuch: 5, xp: 60}))
+        setCompletePopUp(uniqueStats.toString(), 60, 5, 'Daily Completed', false)
+        dispatch(completeCategoryReward(activeCategory.categoryKey));
+
+
+      }
+    }
+  }, [activeCategory, dispatch, setCompletePopUp]);
+
+  const testResetDay = () => {
+    dispatch(forceResetDailyAll())
   }
 
 
@@ -102,6 +147,7 @@ const DailyQuest = ({className}: DailyQuestProps) => {
           title="Choose"
           onClick={togglePopUp}
         />
+        <Button type='button' title="reset" onClick={testResetDay} />
       </div>
 
 
@@ -144,9 +190,11 @@ const DailyQuest = ({className}: DailyQuestProps) => {
       <DailyQuestPopUp
         onClick={handleToggleVisible}
         tasks={categoriesForUI}
-        active={activePopUp}
+        active={activeCategoryPopUp}
         close={togglePopUp}
       />
+
+
     </div>
   )
 }

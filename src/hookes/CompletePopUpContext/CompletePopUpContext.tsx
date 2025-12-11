@@ -9,6 +9,10 @@ interface CompletePopUpInterface {
   setXpGained: (xp: number) => void;
   characteristic: string;
   setCharacteristic: (characteristic: string) => void;
+  howMuchGained: number;
+  setHwoMuchGained: (howMuch: number) => void
+  isBigPopUp: boolean,
+  setIsBigPopUp: (isBigPopUp: boolean) => void
 }
 
-export const CompletePopUpContext =createContext<any>(null)
+export const CompletePopUpContext =createContext<CompletePopUpInterface | null>(null)

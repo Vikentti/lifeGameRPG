@@ -8,11 +8,13 @@ export const useCompletePopUp = () => {
     throw new Error('useCompletePopUp must be used within a CompletePopUpProvider');
   }
 
-  const setCompletePopUp = (stat: string, xp: number, title: string = 'Boss') => {
+  const setCompletePopUp = (stat: string, xp: number, howMuch: number, title: string = 'Boss', isBigPopUP: boolean, ) => {
     context.setPopUpTitle(title)
     context.setXpGained(xp)
     context.setCharacteristic(stat)
+    context.setIsBigPopUp(isBigPopUP)
     context.setActivePopUp(true)
+    context.setHwoMuchGained(howMuch)
   }
 
 

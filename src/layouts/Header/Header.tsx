@@ -36,7 +36,7 @@ const Header = () => {
     },
     {
       title: 'Friend list',
-      link: '/friends',
+      link: '/rules',
     },
     {
       title: 'Daily Quest',

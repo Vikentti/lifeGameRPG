@@ -56,7 +56,6 @@ const Welcome = ({className}: WelcomeProps) => {
 
   const statsArr = getStatsArr(user)
 
-  console.log(user?.dex)
 
   return (
     <div

@@ -1,6 +1,6 @@
 import './AllTasks.scss'
 
-import React, {useContext, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import {useDispatch,} from "react-redux";
 
 import Button from "../../components/Button/Button";
@@ -8,12 +8,12 @@ import CompletePopUp from "../../components/CompletePopUp/CompletePopUp";
 import Field from "../../components/Field/Field";
 import HydrationTasks from "../../components/HydrationTasks/HydrationTasks";
 import TasksList from "../../components/TasksList/TasksList";
-import {
-  CompletePopUpContext
-} from "../../hookes/CompletePopUpContext/CompletePopUpContext";
 import {useBosses,} from "../../hookes/useEnemies";
 import {addBoss, removeAllBosses} from "../../states/boss/bossSlice";
 import type {AppDispatch,} from "../../states/store";
+import {
+  useCompletePopUp
+} from "../../hookes/CompletePopUpContext/useCompletePopUp";
 
 
 function AllTasks() {
@@ -29,7 +29,8 @@ function AllTasks() {
     popUpTitle,
     xpGained,
     characteristic,
-  } = useContext(CompletePopUpContext)
+    howMuchGained,
+  } = useCompletePopUp()
 
 
   const handlerSubmit = (e: React.FormEvent) => {
@@ -78,13 +79,14 @@ function AllTasks() {
           isColumns
         />
       </div>
-      <CompletePopUp
-        isActive={activePopUp}
-        title={popUpTitle}
-        xp={xpGained}
-        stat={characteristic}
-        isBig
-      />
+      {/*<CompletePopUp*/}
+      {/*  isActive={true}*/}
+      {/*  title={popUpTitle}*/}
+      {/*  xp={xpGained}*/}
+      {/*  stat={characteristic}*/}
+      {/*  howMuch={howMuchGained}*/}
+      {/*  isBig*/}
+      {/*/>*/}
     </HydrationTasks>
   )
 }

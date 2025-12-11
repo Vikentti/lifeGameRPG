@@ -22,6 +22,8 @@ interface CategoryProgress {
   daily: Daily[];
   lastUpdate: string;
   visible: boolean,
+  rewardGiven: boolean,
+  dayReset?: string;
 }
 
 interface DailyState {
@@ -33,10 +35,24 @@ interface DailyState {
 }
 
 const getCurrentDate = (): string => {
-  return new Date().toISOString().split('T')[0]
+  const now = new Date();
+  return now.toISOString().split('T')[0];
+};
+
+const shouldResetDay = (lastReset: string): boolean => {
+  if (!lastReset) {
+    return true
+  }
+
+  const today = getCurrentDate()
+  const lastResetDay = new Date(lastReset)
+  const todayDate = new Date(today)
+
+  return lastResetDay.toDateString() !== todayDate.toDateString()
 }
 
 // получаем данные для каждого атрибута
+
 
 const getStrengthTasksByDay = (day: number) => {
   const strengthDays = [
@@ -153,8 +169,10 @@ const initializeCategory = (
   return {
     currentDay: day,
     daily: convertQuestToDaily(quest, day, category),
-    lastUpdate: '',
-    visible: true
+    lastUpdate: getCurrentDate(),
+    visible: true,
+    rewardGiven: false,
+    dayReset: getCurrentDate()
   };
 };
 
@@ -163,7 +181,38 @@ const loadInitialState = (): DailyState => {
     const saved = localStorage.getItem('daily');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+
+        const categories: Category[] = ['strength', 'dexterity', 'intelligence', 'health', 'social'];
+
+        const today = getCurrentDate()
+
+        categories.forEach(cat => {
+          if (parsed[cat]) {
+            if (shouldResetDay(parsed[cat].lastUpdate)) {
+              if (parsed[cat].daily) {
+                parsed[cat].daily.forEach((item) => {
+                  item.isDone = false
+                })
+              }
+            }
+            parsed[cat].rewardGiven = false;
+
+            parsed[cat].lastUpdate = today;
+            parsed[cat].dayReset = today;
+
+            if (typeof parsed[cat].rewardGiven === 'undefined') {
+              parsed[cat].rewardGiven = false;
+            }
+
+            // Добавляем поле dayReset если его нет
+            if (typeof parsed[cat].dayReset === 'undefined') {
+              parsed[cat].dayReset = getCurrentDate();
+            }
+          }
+        });
+
+        return parsed
       } catch (e) {
         console.error('Failed to parse saved state:', e);
       }
@@ -218,14 +267,14 @@ const dailySlice = createSlice({
             break;
         }
 
-        // const userTasks = categoryState.daily.filter(task => task.isUserCreated);
         const Tasks = convertQuestToDaily(quest, nextDay, category);
 
         state[category] = {
           currentDay: nextDay,
           daily: [...Tasks],
           lastUpdate: getCurrentDate(),
-          visible: state[category].visible
+          visible: state[category].visible,
+          rewardGiven: false
         };
       }
     },
@@ -256,7 +305,8 @@ const dailySlice = createSlice({
         currentDay: 1,
         daily: [...Tasks],
         lastUpdate: getCurrentDate(),
-        visible: state[category].visible
+        visible: state[category].visible,
+        rewardGiven: false,
       }
     },
     toggleCategoryVisibility: (state, action: PayloadAction<Category>) => {
@@ -268,11 +318,40 @@ const dailySlice = createSlice({
       taskId: string
     }>) => {
       const {category, taskId} = action.payload
-      const task = state[category].daily.find((item) => item.id === taskId)
+      const cat = state[category]
+      const task = cat.daily.find((item) => item.id === taskId)
 
       if (task) {
         task.isDone = !task.isDone
       }
+    },
+    setCategoryRewardGiven: (state, action: PayloadAction<{
+      category: Category,
+      rewardGiven: boolean
+    }>) => {
+      const {category, rewardGiven} = action.payload
+      state[category].rewardGiven = rewardGiven
+
+    },
+    completeCategoryReward: (state, action: PayloadAction<Category>) => {
+      const category = action.payload;
+      state[category].rewardGiven = true;
+    },
+    forceResetDailyAll: (state) => {
+      const today = getCurrentDate()
+      const categories: Category[] = ['strength', 'dexterity', 'intelligence', 'health', 'social'];
+
+      categories.forEach((category) => {
+        if (state[category].daily) {
+          state[category].daily.forEach((task) => {
+            task.isDone = false
+          })
+        }
+        state[category].rewardGiven = false
+
+        state[category].lastUpdate = today
+        state[category].dayReset = today
+      })
     }
 
   }
@@ -280,8 +359,11 @@ const dailySlice = createSlice({
 
 export const {
   nextCategoryDay,
+  setCategoryRewardGiven,
+  completeCategoryReward,
   resetCategoryDay,
   toggleCategoryVisibility,
-  setCategoryItemDone
+  setCategoryItemDone,
+  forceResetDailyAll
 } = dailySlice.actions
 export default dailySlice.reducer

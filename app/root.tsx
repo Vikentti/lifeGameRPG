@@ -41,6 +41,8 @@ export function Layout({children}: { children: React.ReactNode }) {
   const [xpGained, setXpGained] = useState(0)
   const [characteristic, setCharacteristic] = useState('')
   const [isHydrated, setIsHydrated] = useState(!isClient)
+  const [howMuchGained, setHwoMuchGained] = useState(0)
+  const [isBigPopUp,setIsBigPopUp] = useState(false)
 
   useEffect(() => {
     if (isClient) {
@@ -73,7 +75,9 @@ export function Layout({children}: { children: React.ReactNode }) {
           activePopUp, setActivePopUp,
           popUpTitle, setPopUpTitle,
           xpGained, setXpGained,
-          characteristic, setCharacteristic
+          characteristic, setCharacteristic,
+          howMuchGained, setHwoMuchGained,
+          isBigPopUp,setIsBigPopUp
         }}>
           <Header />
           <Content>
@@ -104,7 +108,9 @@ export function Layout({children}: { children: React.ReactNode }) {
             activePopUp, setActivePopUp,
             popUpTitle, setPopUpTitle,
             xpGained, setXpGained,
-            characteristic, setCharacteristic
+            characteristic, setCharacteristic,
+            howMuchGained, setHwoMuchGained,
+            isBigPopUp,setIsBigPopUp
           }}>
             <Header />
             <Content>
@@ -117,7 +123,9 @@ export function Layout({children}: { children: React.ReactNode }) {
           activePopUp, setActivePopUp,
           popUpTitle, setPopUpTitle,
           xpGained, setXpGained,
-          characteristic, setCharacteristic
+          characteristic, setCharacteristic,
+          howMuchGained, setHwoMuchGained,
+          isBigPopUp,setIsBigPopUp
         }}>
           <Header />
           <Content>

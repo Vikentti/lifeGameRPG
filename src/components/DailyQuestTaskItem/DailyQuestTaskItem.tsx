@@ -4,12 +4,14 @@ import React from "react";
 import type {Category} from "../../states/Daily/DailySlice";
 import {useDispatch} from "react-redux";
 import {onKill} from "../../states/User/userSlice";
+import {
+  useCompletePopUp
+} from "../../hookes/CompletePopUpContext/useCompletePopUp";
 
 interface DailyQuestTaskItemProps {
   className?: string
   title: string,
   isDone: boolean,
-  // index: number,
   id: string,
   category: Category
   setDone: (category: Category, id: string) => void
@@ -28,13 +30,13 @@ const DailyQuestTaskItem = ({
 
   const dispatch= useDispatch()
 
+  const {setCompletePopUp} = useCompletePopUp()
 
-  const onCheckbosChange = () => {
+  const onCheckboxChange = () => {
     setDone(category, id)
+    setCompletePopUp(stat, 15, 1, 'Daily Quest', false)
     dispatch(onKill({stat: stat, howMuch: 1, xp : 15}))
   }
-
-  console.log(stat)
 
 
   return (
@@ -53,7 +55,7 @@ const DailyQuestTaskItem = ({
             className="daily-quest-task-item__checkbox-input"
             type='checkbox'
             checked={isDone}
-            onChange={onCheckbosChange}
+            onChange={onCheckboxChange}
             id={id}
             disabled={isDone}
           />

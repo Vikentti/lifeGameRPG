@@ -52,8 +52,8 @@ const BossCard = ({
   const handleKill = () => {
     if (canKill) {
       dispatch(onKill({stat: boss.stat, howMuch: 10, xp: boss.xp}))
-      setCompletePopUp(boss.stat, boss.xp)
       dispatch(removeBoss(boss.id))
+      setCompletePopUp(boss.stat, boss.xp, 10, 'boss', true)
     } else {
       setIsOpen(true)
     }

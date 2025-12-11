@@ -10,6 +10,7 @@ import miniBossReducer from './boss/miniBossSlice'
 import mobsReducer from './boss/mobsSlice'
 import dailyReducer from './Daily/DailySlice'
 import userReducer from './User/userSlice'
+import dailyCompleteReducer from './Daily/DailyCompleteSlice'
 
 const createNoopStorage = () => {
   return {
@@ -32,7 +33,8 @@ const rootReducer = combineReducers({
   miniBosses: miniBossReducer,
   mobs: mobsReducer,
   user: userReducer,
-  daily: dailyReducer
+  daily: dailyReducer,
+  dailyComplete: dailyCompleteReducer
 })
 
 const persistConfig = {

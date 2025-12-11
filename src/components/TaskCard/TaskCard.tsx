@@ -15,6 +15,10 @@ import type {AppDispatch, RootState} from "../../states/store";
 import {addStat, addXp, onKill} from "../../states/User/userSlice";
 import Button from "../Button/Button";
 import HpBar from "../HpBar/HpBar";
+import {
+  useCompletePopUp
+} from "../../hookes/CompletePopUpContext/useCompletePopUp";
+import CompletePopUp from "../CompletePopUp/CompletePopUp";
 
 interface TaskCardProps {
   className?: string
@@ -42,11 +46,8 @@ const TaskCard: React.FC<TaskCardProps> = ({
 
 
   const {
-    setPopUpTitle,
-    setXpGained,
-    setActivePopUp,
-    setCharacteristic,
-  } = useContext(CompletePopUpContext)
+    setCompletePopUp
+  } = useCompletePopUp()
 
 
   const dispatch: AppDispatch = useDispatch()
@@ -57,13 +58,6 @@ const TaskCard: React.FC<TaskCardProps> = ({
   const currentStatNumber = isBoss ? 10 : isMiniBoss ? 4 : 1
 
   const isStat = stat !== undefined && stat !== "undefined";
-
-  const handlePopUpChange = (item: any) => {
-    const Characteristic = item.stat !== 'undefined' ? item.stat : ''
-    setXpGained(item.xp)
-    setCharacteristic(Characteristic)
-    setActivePopUp(true)
-  }
 
   const handlerDelete = (id: string) => {
     const target = isMiniBoss
@@ -78,10 +72,9 @@ const TaskCard: React.FC<TaskCardProps> = ({
       ? {popUpTitle: "Mini Boss", remove: removeMiniBoss, howMuch: 4}
       : {popUpTitle: "Mob", remove: removeMob, howMuch: 1}
 
+    setCompletePopUp(target.stat, target.xp, data.howMuch, data.popUpTitle, false)
     dispatch(damageBoss({id: target.bossId, damage: target.hp}))
     dispatch(onKill({stat: target.stat, howMuch: 4, xp: target.xp}))
-    setPopUpTitle(data.popUpTitle)
-    handlePopUpChange(target)
     dispatch(data.remove({id}))
   }
 
@@ -109,11 +102,6 @@ const TaskCard: React.FC<TaskCardProps> = ({
     isBoss ? 'src/assets/icons/overlord-helm.svg' :
       isMiniBoss ? '/src/assets/icons/brutal-helm.svg' : '/src/assets/icons/horned-helm.svg'
 
-  const statElement = stat ? (
-    <p className="task-card__stats-stat">
-      {stat} : {currentStatNumber}
-    </p>
-  ) : null;
 
   return (
     <div
@@ -160,6 +148,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
         onClick={() => handlerDelete(id)}
       />}
     </div>
+
   )
 }
 
