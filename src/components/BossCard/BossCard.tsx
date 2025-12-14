@@ -1,6 +1,6 @@
 import './BossCard.scss'
 
-import React, {useState} from "react";
+import React, {useCallback, useMemo, useState} from "react";
 import {useDispatch} from "react-redux";
 import {Link} from "react-router";
 
@@ -14,6 +14,7 @@ import type {Boss} from "../../types/bossTypes";
 import Button from "../Button/Button";
 import HpBar from "../HpBar/HpBar";
 import PopUpBossKill from "../PopUpBossKill/PopUpBossKill";
+import useOnKill from "../../hookes/useOnKIll/useOnKill";
 
 interface BossCardProps {
   className?: string
@@ -42,26 +43,37 @@ const BossCard = ({
 
   const dispatch: AppDispatch = useDispatch()
 
-  const canKill = (leftMobs === 0 && leftMini === 0 && totalMobs > 0 && totalMini > 0)
+  const canKill = useMemo(() => (leftMobs === 0 && leftMini === 0 && totalMobs > 0 && totalMini > 0), [leftMobs, leftMini, totalMobs, totalMini])
 
   const [isOpen, setIsOpen] = useState(false)
 
   const {setCompletePopUp} = useCompletePopUp()
 
+  const killWithPopUp = useOnKill()
 
-  const handleKill = () => {
+
+  const handleKill = useCallback(() => {
     if (canKill) {
-      dispatch(onKill({stat: boss.stat, howMuch: 10, xp: boss.xp}))
-      dispatch(removeBoss(boss.id))
-      setCompletePopUp(boss.stat, boss.xp, 10, 'boss', true)
+
+      killWithPopUp({
+        stat: boss.stat,
+        xp: boss.xp,
+        howMuch: 10,
+        type: 'boss',
+        isBig: true
+      }, () => {
+        dispatch(removeBoss(boss.id))
+
+      })
+
     } else {
       setIsOpen(true)
     }
-  }
+  }, [canKill, dispatch, boss, setCompletePopUp])
 
-  const handelOpen = () => {
-    setIsOpen(!isOpen)
-  }
+  const handelOpen = useCallback(() => {
+    setIsOpen((prev) => !prev)
+  }, [])
 
 
   return (

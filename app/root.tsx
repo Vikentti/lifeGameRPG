@@ -22,6 +22,7 @@ import {
   createServerStore,
 } from "../src/states/store"
 import type {Route} from "./+types/root"
+import DailyReset from "../src/components/DailyReset/DailyReset";
 
 const isClient = typeof window !== 'undefined'
 
@@ -80,6 +81,7 @@ export function Layout({children}: { children: React.ReactNode }) {
           isBigPopUp,setIsBigPopUp
         }}>
           <Header />
+          <DailyReset />
           <Content>
             {children}
           </Content>
@@ -112,6 +114,7 @@ export function Layout({children}: { children: React.ReactNode }) {
             howMuchGained, setHwoMuchGained,
             isBigPopUp,setIsBigPopUp
           }}>
+            <DailyReset />
             <Header />
             <Content>
               {children}

@@ -1,7 +1,7 @@
 import './TaskCard.scss'
 
 import classNames from 'classnames'
-import React, {useContext, useState} from "react";
+import React, {useCallback, useContext, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 
 import {
@@ -19,6 +19,7 @@ import {
   useCompletePopUp
 } from "../../hookes/CompletePopUpContext/useCompletePopUp";
 import CompletePopUp from "../CompletePopUp/CompletePopUp";
+import useOnKill from "../../hookes/useOnKIll/useOnKill";
 
 interface TaskCardProps {
   className?: string
@@ -54,12 +55,13 @@ const TaskCard: React.FC<TaskCardProps> = ({
 
   const {mobs, miniBosses} = useEnemies()
 
-
   const currentStatNumber = isBoss ? 10 : isMiniBoss ? 4 : 1
 
   const isStat = stat !== undefined && stat !== "undefined";
 
-  const handlerDelete = (id: string) => {
+  const killWithPopUo = useOnKill()
+
+  const handlerDelete = useCallback((id: string) => {
     const target = isMiniBoss
       ? [...miniBosses.miniBosses].find((item) => item.id === id)
       : [...mobs.mobs].find((item) => item.id === id)
@@ -72,13 +74,21 @@ const TaskCard: React.FC<TaskCardProps> = ({
       ? {popUpTitle: "Mini Boss", remove: removeMiniBoss, howMuch: 4}
       : {popUpTitle: "Mob", remove: removeMob, howMuch: 1}
 
-    setCompletePopUp(target.stat, target.xp, data.howMuch, data.popUpTitle, false)
-    dispatch(damageBoss({id: target.bossId, damage: target.hp}))
-    dispatch(onKill({stat: target.stat, howMuch: 4, xp: target.xp}))
-    dispatch(data.remove({id}))
-  }
 
-  const handlerSimpleDelete = (id: string) => {
+    killWithPopUo({
+        stat: target.stat,
+        xp: target.xp,
+        howMuch: data.howMuch,
+        type: data.popUpTitle,
+      },
+      () => {
+        dispatch(damageBoss({id: target.bossId, damage: target.hp}))
+        dispatch(data.remove({id}))
+      }
+    )
+  }, [dispatch, isMiniBoss, mobs, miniBosses, setCompletePopUp])
+
+  const handlerSimpleDelete = useCallback((id: string) => {
     if (isBoss) {
       dispatch(removeBoss(id))
 
@@ -87,7 +97,9 @@ const TaskCard: React.FC<TaskCardProps> = ({
         ? miniBosses.miniBosses.find(item => item.id === id)
         : mobs.mobs.find(item => item.id === id);
 
-      if (!target) {return}
+      if (!target) {
+        return
+      }
 
       dispatch(addHp({id: target.bossId, upHp: target.hp}))
 
@@ -95,7 +107,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
 
       dispatch(targetDelete({id: id, noComplete: true, bossId: target.bossId}))
     }
-  }
+  }, [dispatch, miniBosses, mobs, isMiniBoss, isBoss])
 
 
   const imageSrc =

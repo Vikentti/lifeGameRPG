@@ -1,6 +1,6 @@
 import './DailyQuestTaskItem.scss'
 import classNames from 'classnames'
-import React from "react";
+import React, {useCallback} from "react";
 import type {Category} from "../../states/Daily/DailySlice";
 import {useDispatch} from "react-redux";
 import {onKill} from "../../states/User/userSlice";
@@ -27,17 +27,19 @@ const DailyQuestTaskItem = ({
                               id,
                               stat
                             }: DailyQuestTaskItemProps) => {
+  const dispatch = useDispatch();
+  const {setCompletePopUp} = useCompletePopUp();
 
-  const dispatch= useDispatch()
+  const onCheckboxChange = useCallback(() => {
+    if (!isDone) {
+      setDone(category, id);
 
-  const {setCompletePopUp} = useCompletePopUp()
-
-  const onCheckboxChange = () => {
-    setDone(category, id)
-    setCompletePopUp(stat, 15, 1, 'Daily Quest', false)
-    dispatch(onKill({stat: stat, howMuch: 1, xp : 15}))
-  }
-
+      if (stat) {
+        setCompletePopUp(stat, 15, 1, 'Daily Quest', false);
+        dispatch(onKill({stat: stat, howMuch: 1, xp: 15}));
+      }
+    }
+  }, [isDone, setDone, category, id, stat, setCompletePopUp, dispatch]);
 
   return (
     <div className={classNames(
@@ -77,7 +79,7 @@ const DailyQuestTaskItem = ({
         </div>
       </label>
     </div>
-  )
-}
+  );
+};
 
-export default DailyQuestTaskItem
+export default DailyQuestTaskItem;

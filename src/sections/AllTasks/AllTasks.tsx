@@ -1,19 +1,16 @@
 import './AllTasks.scss'
 
-import React, {useRef, useState} from "react";
+import React, {memo, useCallback, useMemo, useRef, useState} from "react";
 import {useDispatch,} from "react-redux";
 
 import Button from "../../components/Button/Button";
-import CompletePopUp from "../../components/CompletePopUp/CompletePopUp";
 import Field from "../../components/Field/Field";
 import HydrationTasks from "../../components/HydrationTasks/HydrationTasks";
 import TasksList from "../../components/TasksList/TasksList";
 import {useBosses,} from "../../hookes/useEnemies";
 import {addBoss, removeAllBosses} from "../../states/boss/bossSlice";
 import type {AppDispatch,} from "../../states/store";
-import {
-  useCompletePopUp
-} from "../../hookes/CompletePopUpContext/useCompletePopUp";
+
 
 
 function AllTasks() {
@@ -24,16 +21,13 @@ function AllTasks() {
   const [textValue, setTextValue] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const {
-    activePopUp,
-    popUpTitle,
-    xpGained,
-    characteristic,
-    howMuchGained,
-  } = useCompletePopUp()
+  const bossArray = useMemo(() => [...bosses.bosses], [[bosses.bosses]])
 
+  const handlerChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setTextValue(e.target.value)
+  }, [])
 
-  const handlerSubmit = (e: React.FormEvent) => {
+  const handlerSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault()
 
     if (textValue.trim() !== '') {
@@ -41,11 +35,9 @@ function AllTasks() {
       setTextValue('')
       inputRef.current?.focus()
     }
-  }
+  }, [textValue, dispatch])
 
-  const handlerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTextValue(e.target.value)
-  }
+
 
 
   return (
@@ -74,21 +66,13 @@ function AllTasks() {
           title="Delete all "
         />
         <TasksList
-          arrayToMap={[...bosses.bosses]}
+          arrayToMap={bossArray}
           isBoss
           isColumns
         />
       </div>
-      {/*<CompletePopUp*/}
-      {/*  isActive={true}*/}
-      {/*  title={popUpTitle}*/}
-      {/*  xp={xpGained}*/}
-      {/*  stat={characteristic}*/}
-      {/*  howMuch={howMuchGained}*/}
-      {/*  isBig*/}
-      {/*/>*/}
     </HydrationTasks>
   )
 }
 
-export default AllTasks
+export default memo(AllTasks)
